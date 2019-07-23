@@ -66,3 +66,39 @@
   * average case is N/2 for search and N for insert
   * data is not ordered
   * we would like to do better than linear
+# Binary Search
+* Requires an ordered list of value -- use binary search algorithm to save time on inserting (N => log N)
+* we use a rank(key) method to get the position of the key
+## Insert
+* Now we need to maintain order when we insert -- shifting everything, not efficient (also requires auxiliary array) [I thought we were using linekd list? -- no -- we cannot implement a binary search on a linked list]
+# Ordered Symbol Table API
+* add methods like min, max, floor, ceiling, rank, range -- remember, keys are comparable
+  * ex. keys are departure times, values are flight destinations
+  * what's confusing is distinguishing between 3 things: the array index, the key, and the value (rank method would do this?)
+  * floor and ceiling = nearest neighbor
+# Solution 3: Binary Search Tree (???)
+* deletion becomes trickier
+* searching: if your value is less, go left; greater, right; = stop
+* We've basically used a data structure to represent the underlying idea of the binary search algo
+* search and insert -- put it in the empty place corresponding to the parent
+* search again is log N (this time corresponding to the depth)
+* worst case -- the BST is completely unbalanced (a linked list)
+* nodes in the BST hold keys and values (seems like the rank is now going to correspond to the position in the tree)
+* tree might not be balanced -- shape may vary
+* remember from before: meaning of rank = number of items that are less than that key
+* a heap is a kind of binary tree -- but not all binary trees are heaps -- it would be nice if this were a heap!
+* if N keys are inserted randomly, compares ~ 2 ln N (almost log N -- comes from recurrence
+  * random order leads to non well-balanced trees
+  * worst case is N, but chance is small (random order is not going to lead to a linked list in vast majority of cases)
+# So Far
+* sequential search (N), linked list => binary search (lg N), ordered array => BST -- we get better performance for insert, but that's it. -- we have the right idea, but we haven't optimized yet
+* ordered iteration is also something to consider -- when we iterate through the keys, do we get them in order
+* BST -- what is the performance for deletion?
+  * lazy approach -- just create a "tombstone" (NULL) -- bad for memory and performance (because your performance is now related to history of size, rather than current size -- if it was once 1000N and is now N, -- your performance comes from that 1000N!)
+  * another approach -- delete the minimum
+    * go left until you find a null left, replace with the right, update counts (so we have a count associated with each tree as well)
+  * Hibbard deletion -- find the node and set parent to null ???
+    * another case -- replace with child link -- [I'm a little lost here!]
+    * not symmetric (?) but simple / efficient -- root(N) time
+# Assignment 
+* 3.1 & 3.2, 31 and 32 in d2source.zip -- implementing functions in MyIntSET (implementation of BST)
