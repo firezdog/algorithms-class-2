@@ -1,2 +1,5 @@
 .idea
 *.iml
+*.jar
+out/
+.vscode/
