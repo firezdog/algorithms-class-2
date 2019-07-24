@@ -1,3 +1,5 @@
+package SymbolTables;
+
 public interface ST<Key extends Comparable<Key>, Value> {
     void put(Key key, Value value);
     Value get (Key key);

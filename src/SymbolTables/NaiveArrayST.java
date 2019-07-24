@@ -1,8 +1,11 @@
+package SymbolTables;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
 public class NaiveArrayST<Key extends Comparable<Key>, Value> implements ST<Key, Value> {
-    /* Our fields -- two associative arrays and an int to keep track of the size of the table. */
+    /* Our fields -- two associative arrays and an int to keep track of the size of the table.
+    It would be nice to use resizeable arrays here -- that would require a few modifications to put, at least. */
     private Key[] keys;
     private Value[] values;
     private int size;
@@ -14,7 +17,7 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value> implements ST<Key,
         values = (Value[]) new Object[capacity];
     }
 
-    /* Helper method to return the index of a given key in "keys" -- indexes always match between associative arrays.  Returns "-1" if the key is not present. */
+    /* Helper method to return the index of a given key in "keys" -- indexes always match between associative arrays.  Returns N if the key is not present (for size N). */
     private int search(Key key) {
         for (int i = 0; i < size; i++) {
             if (keys[i].equals(key)) return i;
@@ -45,7 +48,8 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value> implements ST<Key,
     /* Requires shift left */
         int index = this.search(key);
         if (index == size) return;
-        // last element should become null by default.
+        /* last element should become null by default. Note we have to shift both because array coordination
+        is required. */
         for (int i = index; i < size; i++) {
             keys[i] = keys[i + 1];
             values[i] = values[i + 1];
@@ -70,18 +74,17 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value> implements ST<Key,
 
     @Override
     public Iterable<Key> keys() {
-        return new ST_Iterable<Key>();
+        return new ST_Iterable();
     }
 
-    class ST_Iterable<Key> implements Iterable<Key> {
+    class ST_Iterable implements Iterable<Key> {
 
         Key[] keys;
 
-        @SuppressWarnings("unchecked")
         private ST_Iterable() {
-            keys =(Key[]) NaiveArrayST.this.keys;
-            // not pretty but it does the job -- because I am too lazy to write a sort algo for this.
-            Arrays.sort(keys, 0, NaiveArrayST.this.size - 1);
+            keys = NaiveArrayST.this.keys;
+            /* in an earlier iteration I was sorting the keys -- you definitely don't want to do this -- because you
+            want coordination between the values of the two arrays. */
         }
 
         public Iterator<Key> iterator() {
@@ -98,7 +101,7 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value> implements ST<Key,
 
             @Override
             public Key next() {
-                return (Key) keys[current++];
+                return keys[current++];
             }
         }
     }
