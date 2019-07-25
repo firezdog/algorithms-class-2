@@ -42,7 +42,7 @@ public class ST_Test_Client {
         }
     }
     public static void main(String[] args) {
-        ST<String, Integer> st = new LinkedList_ST<>();
+        ST<String, Integer> st = new NaiveArrayST<>();
         Trace(st);
     }
 }

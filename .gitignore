@@ -3,3 +3,4 @@
 *.jar
 out/
 .vscode/
+.DS_Store
