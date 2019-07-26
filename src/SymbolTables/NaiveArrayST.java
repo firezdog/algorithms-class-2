@@ -29,8 +29,8 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value extends Comparable<
     public void put(Key key, Value value) {
         // we start by getting index of the key -- if the key is not in the list, index will be the size of the array.
         int index = this.search(key);
-        keys.push(index, key);
-        values.push(index, value);
+        keys.put(index, key);
+        values.put(index, value);
         // size only goes up if we are not replacing a key (otherwise search gives us null pointer errors!
         if (index == size) size++;
     }
@@ -45,8 +45,8 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value extends Comparable<
     /* Requires shift left */
         int index = this.search(key);
         if (index == size) return;
-        keys.delete(index);
-        values.delete(index);
+        keys.pop(index);
+        values.pop(index);
         size--;
     }
 
