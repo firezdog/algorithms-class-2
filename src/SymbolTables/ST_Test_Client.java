@@ -43,14 +43,14 @@ public class ST_Test_Client {
         Integer greatestCount = 0;
         String greatestKey = "";
         for (String newKey: st.keys()) {
-            int newCount = st.get(newKey);
-            if (newCount > greatestCount) {
+            Integer newCount = st.get(newKey);
+            if (newCount != null && newCount > greatestCount) {
                 greatestCount = newCount;
                 greatestKey = newKey;
             }
         }
         double time = stopwatch.elapsedTime();
-        StdOut.printf("%s: %d -- %d \"words\" processed in %f ms", greatestKey, greatestCount, seen, time);
+        StdOut.printf("%s: %d -- %d \"words\" processed in %f ms\n", greatestKey, greatestCount, seen, time);
     }
 
     static void APITest() {
@@ -88,7 +88,11 @@ public class ST_Test_Client {
     }
 
     public static void main(String[] args) {
-        APITest();
-        // performanceTest(-1, 4);
+        // APITest();
+        int limit = 1;
+        for (int i = 1; i < 20; i++) {
+            limit = limit * 2;
+            performanceTest(limit, 10);
+        }
     }
 }
