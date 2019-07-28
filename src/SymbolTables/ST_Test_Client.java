@@ -92,7 +92,8 @@ public class ST_Test_Client {
 
     public static void main(String[] args) {
         // APITest();
-        // No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
-        performanceTest(-1, 1);
+        /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
+        * I guess you *could* just double until you run out of input and get some data out of that... */
+        performanceTest(2000000, 1);
     }
 }
