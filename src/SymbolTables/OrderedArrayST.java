@@ -103,6 +103,36 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
         return size;
     }
 
+    //TODO
+    public Key min() {
+        return null;
+    }
+
+    //TODO
+    public Key max() {
+        return null;
+    }
+
+    //TODO
+    public Key select(int k) {
+        return null;
+    }
+
+    //TODO
+    public Key ceiling(Key k) {
+        return null;
+    }
+
+    //TODO
+    public Key floor(Key k) {
+        return null;
+    }
+
+    //TODO
+    public Iterable<Key> keys(Key lo, Key hi) {
+        return null;
+    }
+
     public Iterable<Key> keys() {
         return new ST_Iterable(arr);
     }
