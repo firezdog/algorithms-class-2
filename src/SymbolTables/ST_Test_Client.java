@@ -35,7 +35,9 @@ public class ST_Test_Client {
             String key = StdIn.readString();
             if (key.length() > cutoff) {
                 Integer count = st.get(key);
-                if (count == null) st.put(key, 1);
+                if (count == null) {
+                    st.put(key, 1);
+                }
                 else st.put(key, count + 1);
             }
             seen++;
@@ -50,7 +52,7 @@ public class ST_Test_Client {
             }
         }
         double time = stopwatch.elapsedTime();
-        StdOut.printf("%s: %d -- %d \"words\" processed in %f ms\n", greatestKey, greatestCount, seen, time);
+        StdOut.printf("%s: %d -- %d \"words\" (%d distinct) processed in %f ms\n", greatestKey, greatestCount, seen, st.size(), time);
     }
 
     static void APITest() {
@@ -89,10 +91,7 @@ public class ST_Test_Client {
 
     public static void main(String[] args) {
         // APITest();
-        int limit = 1;
-        for (int i = 1; i < 20; i++) {
-            limit = limit * 2;
-            performanceTest(limit, 10);
-        }
+        // No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
+        performanceTest(-1, 1);
     }
 }
