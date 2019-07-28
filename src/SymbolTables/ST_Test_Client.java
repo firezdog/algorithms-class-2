@@ -2,6 +2,7 @@ package SymbolTables;
 
 import edu.princeton.cs.algs4.*;
 
+@SuppressWarnings("all")
 public class ST_Test_Client {
 
     // I guess this is Hungarian notation now...

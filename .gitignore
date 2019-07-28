@@ -4,4 +4,4 @@
 out/
 .vscode/
 .DS_Store
-very_big.txt
+data/
