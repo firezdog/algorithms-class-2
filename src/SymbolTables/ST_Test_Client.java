@@ -7,6 +7,7 @@ public class ST_Test_Client {
 
     // I guess this is Hungarian notation now...
     private static ST<String, Integer> st;
+    private static int totalCompares = 0;
 
     static ST<String, Integer> initializeST() {
         return new OrderedArrayST<>();
@@ -28,6 +29,10 @@ public class ST_Test_Client {
     /* (1) read in all the strings greater than the minimum length and keep a count of occurrences
     *  (2) retrieve the string with the highest count */
     static void performanceTest(int limit, int cutoff) {
+        StdDraw.setPenRadius(.01);
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 150000);
+        StdDraw.setYscale(0, 60);
         st = initializeST();
         int seen = 0;
         Stopwatch stopwatch = new Stopwatch();
@@ -38,10 +43,13 @@ public class ST_Test_Client {
                 Integer count = st.get(key);
                 if (count == null) {
                     st.put(key, 1);
+                    accumulate(++seen);
                 }
-                else st.put(key, count + 1);
+                else {
+                    st.put(key, count + 1);
+                    accumulate(++seen);
+                }
             }
-            seen++;
         }
         Integer greatestCount = 0;
         String greatestKey = "";
@@ -54,6 +62,16 @@ public class ST_Test_Client {
         }
         double time = stopwatch.elapsedTime();
         StdOut.printf("%s: %d -- %d \"words\" (%d distinct) processed in %f ms\n", greatestKey, greatestCount, seen, st.size(), time);
+        StdDraw.show();
+    }
+
+    static void accumulate(int seen) {
+        int compares = st.compares();
+        totalCompares += compares;
+        StdDraw.setPenColor(StdDraw.GRAY);
+        StdDraw.point(seen, compares);
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.point(seen, totalCompares / seen);
     }
 
     static void APITest() {
@@ -94,6 +112,6 @@ public class ST_Test_Client {
         // APITest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
-        performanceTest(2000000, 1);
+        performanceTest(-1, 1);
     }
 }

@@ -7,6 +7,10 @@ public class LinkedList_ST<Key extends Comparable<Key>, Value> implements ST<Key
     /* The number of key-value pairs in the symbol table. */
     private int size;
 
+    public int compares() {
+        return 0;
+    }
+
     private class Node {
         Key key;
         Value value;

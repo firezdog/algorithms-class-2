@@ -7,6 +7,11 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
 
     /* The number of key-value pairs in the symbol table. */
     private int size;
+    private int compares;
+
+    public int compares() {
+        int data = compares; compares = 0; return data;
+    }
 
     class Entry implements Comparable<Entry> {
 
@@ -21,6 +26,7 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
         public int compareTo(Entry e) {
             if (e == null) return -1;
             if (e.getClass() != this.getClass()) return -1;
+            compares++;
             return this.key.compareTo(e.key);
         }
     }

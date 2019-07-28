@@ -9,6 +9,10 @@ public class NaiveArrayST<Key extends Comparable<Key>, Value extends Comparable<
     private ResizeableArray<Value> values;
     private int size;
 
+    public int compares() {
+        return 0;
+    }
+
     public NaiveArrayST() {
         // we need keys to be a Comparable (as above) because we rank them in later applications.
         keys = new ResizeableArray<>();
