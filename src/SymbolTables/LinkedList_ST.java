@@ -6,9 +6,10 @@ public class LinkedList_ST<Key extends Comparable<Key>, Value> implements ST<Key
 
     /* The number of key-value pairs in the symbol table. */
     private int size;
+    private int compares;
 
     public int compares() {
-        return 0;
+        int data = compares; compares = 0; return data;
     }
 
     private class Node {
@@ -31,6 +32,7 @@ public class LinkedList_ST<Key extends Comparable<Key>, Value> implements ST<Key
     private Node search(Key key) {
         Node walker = head;
         while (walker != null) {
+            compares++;
             if (walker.key.equals(key)) return walker;
             walker = walker.next;
         }

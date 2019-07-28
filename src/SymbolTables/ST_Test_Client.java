@@ -1,6 +1,9 @@
 package SymbolTables;
 
+import com.sun.javafx.geom.Vec2d;
 import edu.princeton.cs.algs4.*;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class ST_Test_Client {
@@ -29,13 +32,18 @@ public class ST_Test_Client {
     /* (1) read in all the strings greater than the minimum length and keep a count of occurrences
     *  (2) retrieve the string with the highest count */
     static void performanceTest(int limit, int cutoff) {
-        StdDraw.setPenRadius(.01);
-        StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 150000);
-        StdDraw.setYscale(0, 60);
         st = initializeST();
+        StdDraw.enableDoubleBuffering();
+        /* scale should reflect the number of words in standard input.  Not sure how to get without emptying StdIn.
+        Note that scale for y will reflect for performance -- the worse the performance, the closer it needs to be to
+        size of StdIn. */
+        StdDraw.setXscale(0, 131000);
+        StdDraw.setYscale(0, 1310);
+
         int seen = 0;
+
         Stopwatch stopwatch = new Stopwatch();
+
         while (!StdIn.isEmpty()) {
             if (limit != -1 && seen > limit) break;
             String key = StdIn.readString();
@@ -51,6 +59,7 @@ public class ST_Test_Client {
                 }
             }
         }
+
         Integer greatestCount = 0;
         String greatestKey = "";
         for (String newKey: st.keys()) {
@@ -60,6 +69,7 @@ public class ST_Test_Client {
                 greatestKey = newKey;
             }
         }
+
         double time = stopwatch.elapsedTime();
         StdOut.printf("%s: %d -- %d \"words\" (%d distinct) processed in %f ms\n", greatestKey, greatestCount, seen, st.size(), time);
         StdDraw.show();
@@ -68,10 +78,11 @@ public class ST_Test_Client {
     static void accumulate(int seen) {
         int compares = st.compares();
         totalCompares += compares;
+        double runningAverage = totalCompares / seen;
         StdDraw.setPenColor(StdDraw.GRAY);
         StdDraw.point(seen, compares);
         StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.point(seen, totalCompares / seen);
+        StdDraw.point(seen, runningAverage);
     }
 
     static void APITest() {
