@@ -1,6 +1,7 @@
 package SymbolTables;
 
 import com.sun.javafx.geom.Vec2d;
+import com.sun.tools.corba.se.idl.constExpr.Or;
 import edu.princeton.cs.algs4.*;
 
 import java.util.ArrayList;
@@ -9,10 +10,10 @@ import java.util.ArrayList;
 public class ST_Test_Client {
 
     // I guess this is Hungarian notation now...
-    private static ST<String, Integer> st;
+    private static OrderedArrayST<String, Integer> st;
     private static int totalCompares = 0;
 
-    static ST<String, Integer> initializeST() {
+    static OrderedArrayST<String, Integer> initializeST() {
         return new OrderedArrayST<>();
     }
 
@@ -85,6 +86,26 @@ public class ST_Test_Client {
         StdDraw.point(seen, runningAverage);
     }
 
+    static void ExtendedAPITest() {
+        st = initializeST();
+        StdOut.println("Initialized.");
+        StdOut.println("min: " + st.min());
+        StdOut.println("max: " + st.max());
+        StdOut.println("select(-5): " + st.select(-5));
+        StdOut.println("ceiling(doge): " + st.ceiling("doge"));
+        StdOut.println("floor(doge): " + st.floor("doge"));
+        trace();
+        StdOut.println("Putting stuff in.");
+        StdOut.println("min: " + st.min());
+        StdOut.println("max: " + st.max());
+        StdOut.println("select(5): " + st.select(5));
+        StdOut.println("floor(doge): " + st.floor("doge"));
+        StdOut.println("ceiling(doge): " + st.ceiling("doge"));
+        StdOut.println("ceiling(zealously): " + st.ceiling("zealously"));
+        st.delete("a");
+        StdOut.println("floor(a): " + st.floor("a"));
+    }
+
     static void APITest() {
         st = initializeST();
         StdOut.println("SymbolTables.ST is empty: " + st.isEmpty());
@@ -121,8 +142,9 @@ public class ST_Test_Client {
 
     public static void main(String[] args) {
         // APITest();
+        ExtendedAPITest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
-        performanceTest(-1, 1);
+        // performanceTest(-1, 1);
     }
 }

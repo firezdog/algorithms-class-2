@@ -49,7 +49,7 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
             else if (result == 0) return mid;
             else { lo = mid + 1; mid = lo + (hi - lo) / 2; }
         }
-        return mid;
+        return lo;
     }
 
     /* For a given key, value pair, put an associated entry into the symbol table. */
@@ -103,29 +103,37 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
         return size;
     }
 
-    //TODO
     public Key min() {
-        return null;
+        if (isEmpty()) return null;
+        return arr.get(0).key;
     }
 
-    //TODO
     public Key max() {
-        return null;
+        if (isEmpty()) return null;
+        return arr.get(size - 1).key;
     }
 
-    //TODO
     public Key select(int k) {
+        Entry ranked = arr.get(k);
+        if (ranked != null) return ranked.key;
         return null;
     }
 
-    //TODO
+    // order of calls is very important here!
     public Key ceiling(Key k) {
-        return null;
+        if (isEmpty()) return null;
+        int rank = search(new Entry(k, null));
+        if (rank >= size) return arr.get(size - 1).key;
+        if (arr.get(rank).key.compareTo(k) == 0) return k;
+        return arr.get(rank + 1).key;
     }
 
-    //TODO
     public Key floor(Key k) {
-        return null;
+        if (isEmpty()) return null;
+        int rank = search(new Entry(k, null));
+        if (arr.get(rank).key.compareTo(k) == 0) return k;
+        if (rank <= 0) return arr.get(0).key;
+        return arr.get(rank - 1).key;
     }
 
     //TODO
