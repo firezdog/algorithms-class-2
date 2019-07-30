@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class ST_Test_Client {
 
     // I guess this is Hungarian notation now...
-    private static OrderedArrayST<String, Integer> st;
+    private static ComparableST<String, Integer> st;
     private static int totalCompares = 0;
 
-    static OrderedArrayST<String, Integer> initializeST() {
+    static ComparableST<String, Integer> initializeST() {
         return new OrderedArrayST<>();
     }
 
@@ -26,6 +26,12 @@ public class ST_Test_Client {
 
     static void print() {
         for (String s : st.keys()) {
+            StdOut.println(s + " " + st.get(s));
+        }
+    }
+
+    static void print(String lo, String hi) {
+        for (String s : st.keys(lo, hi)) {
             StdOut.println(s + " " + st.get(s));
         }
     }
@@ -104,6 +110,11 @@ public class ST_Test_Client {
         StdOut.println("ceiling(zealously): " + st.ceiling("zealously"));
         st.delete("a");
         StdOut.println("floor(a): " + st.floor("a"));
+        print("wagd", "waj");
+        StdOut.println("===============================");
+        print("y", "zz");
+        StdOut.println("===============================");
+        print("aa", "ab");
     }
 
     static void APITest() {

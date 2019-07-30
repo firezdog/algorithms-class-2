@@ -1,9 +1,10 @@
 package SymbolTables;
 
 import java.util.Iterator;
+import edu.princeton.cs.algs4.Queue;
 
 @SuppressWarnings("all")
-public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Key, Value> {
+public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ComparableST<Key, Value> {
 
     /* The number of key-value pairs in the symbol table. */
     private int size;
@@ -124,6 +125,7 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
         if (isEmpty()) return null;
         int rank = search(new Entry(k, null));
         if (rank >= size) return arr.get(size - 1).key;
+        if (rank <= 0) return arr.get(0).key;
         if (arr.get(rank).key.compareTo(k) == 0) return k;
         return arr.get(rank + 1).key;
     }
@@ -131,14 +133,20 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements ST<Ke
     public Key floor(Key k) {
         if (isEmpty()) return null;
         int rank = search(new Entry(k, null));
-        if (arr.get(rank).key.compareTo(k) == 0) return k;
         if (rank <= 0) return arr.get(0).key;
+        if (rank >= size) return arr.get(size - 1).key;
+        if (arr.get(rank).key.compareTo(k) == 0) return k;
         return arr.get(rank - 1).key;
     }
 
-    //TODO
     public Iterable<Key> keys(Key lo, Key hi) {
-        return null;
+        Queue<Key> keys = new Queue<>();
+        int lowerBound = search(new Entry(ceiling(lo), null));
+        int upperBound = search(new Entry(floor(hi), null));
+        for (int i = lowerBound; i <= upperBound; i++) {
+            keys.enqueue(arr.get(i).key);
+        }
+        return keys;
     }
 
     public Iterable<Key> keys() {
