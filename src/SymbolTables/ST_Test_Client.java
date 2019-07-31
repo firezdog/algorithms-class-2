@@ -14,7 +14,7 @@ public class ST_Test_Client {
     private static int totalCompares = 0;
 
     static ComparableST<String, Integer> initializeST() {
-        return new OrderedArrayST<>();
+        return new BST_ST<>();
     }
 
     static void trace() {
@@ -40,12 +40,12 @@ public class ST_Test_Client {
     *  (2) retrieve the string with the highest count */
     static void performanceTest(int limit, int cutoff) {
         st = initializeST();
-        StdDraw.enableDoubleBuffering();
+        // StdDraw.enableDoubleBuffering();
         /* scale should reflect the number of words in standard input.  Not sure how to get without emptying StdIn.
         Note that scale for y will reflect for performance -- the worse the performance, the closer it needs to be to
         size of StdIn. */
         StdDraw.setXscale(0, 131000);
-        StdDraw.setYscale(0, 1310);
+        StdDraw.setYscale(0, 131000);
 
         int seen = 0;
 
@@ -152,8 +152,8 @@ public class ST_Test_Client {
     }
 
     public static void main(String[] args) {
-        // APITest();
-        ExtendedAPITest();
+        APITest();
+        // ExtendedAPITest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
         // performanceTest(-1, 1);
