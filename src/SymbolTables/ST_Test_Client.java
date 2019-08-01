@@ -40,12 +40,13 @@ public class ST_Test_Client {
     *  (2) retrieve the string with the highest count */
     static void performanceTest(int limit, int cutoff) {
         st = initializeST();
-        // StdDraw.enableDoubleBuffering();
+        StdDraw.enableDoubleBuffering();
         /* scale should reflect the number of words in standard input.  Not sure how to get without emptying StdIn.
         Note that scale for y will reflect for performance -- the worse the performance, the closer it needs to be to
         size of StdIn. */
-        StdDraw.setXscale(0, 131000);
-        StdDraw.setYscale(0, 131000);
+        StdDraw.setCanvasSize(500, 100);
+        StdDraw.setXscale(0, 10000000);
+        StdDraw.setYscale(0, 100);
 
         int seen = 0;
 
@@ -78,7 +79,7 @@ public class ST_Test_Client {
         }
 
         double time = stopwatch.elapsedTime();
-        StdOut.printf("%s: %d -- %d \"words\" (%d distinct) processed in %f ms\n", greatestKey, greatestCount, seen, st.size(), time);
+        StdOut.printf("%s: %d -- %d \"words\" (%d distinct) processed in %f s\n", greatestKey, greatestCount, seen, st.size(), time);
         StdDraw.show();
     }
 
@@ -152,8 +153,8 @@ public class ST_Test_Client {
     }
 
     public static void main(String[] args) {
-        APITest();
-        // ExtendedAPITest();
+        // APITest();
+        ExtendedAPITest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
         // performanceTest(-1, 1);
