@@ -119,40 +119,26 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return walker.key;
     }
 
-    /* Depends upon accurate node counts for each sub-tree.  Starting from the root: the number of nodes
-    to the left is the rank of the root.  If the rank of the root is b and there are n nodes in the root tree,
-    then the tree to the left has nodes with ranks in the range [0, b-1] and the tree to the right has nodes
-    with ranks in the range [b+1, n-1].  Continuing from say the left of the root, if the rank of the left
-    tree is c, then the rank of nodes to its left is from [0, c-1] and to its right from [c+1, b-1].
-
-    So say we want to find the node of rank d.  Is d less than or greater than b, the rank of the right?  If less,
-    go left; if greater, go right.  Say we go left -- we're looking for d in the range [0, ..., c, ...b-1], since b
-    is the rank of the root.  But b is the size of the tree to the left.  Our problem is we don't know what c is --
-    but we do know that everything to the left of c has rank [0, ..., c-1], and that the number of items there is the
-    size of that new tree. Right? */
     public Key select(int k) {
         if (isEmpty() || k < 0 || size() - 1 < k) return null;
-        BST walker = root;
-        int minRank = size(root.left) - 1;
-        int maxRank = minRank;
-        BST next;
+        BST walker = root, next;
+        int maxRank, minRank = 0;
         while (true) {
-            /* look at the left -- if the max for the left is less than k, look right; if the min for the right
-            is > k, return current.  No other cases should be possible (I hope). Also, we should test with a next
-            before moving the walker -- if the next is null, break out immediately. */
-            int newMax = maxRank - 1;
-            if (newMax > k) {
-                next = walker.left;
-                maxRank = newMax; minRank = size(next.left) - 1;
-            } else {
-                minRank++; maxRank = minRank + size(walker.right);
-                if (minRank < maxRank) {
-                    next = walker.right;
-                } else return walker.key;
+            next = walker.left;
+            maxRank = size(next) - 1;
+            if (k < maxRank) {
+                walker = next;
+                continue;
             }
-            if (next == null) return walker.key;
-            walker = next;
+            next = walker.right;
+            minRank++; maxRank = size(walker) + 1;
+            if (minRank < k && k < maxRank) {
+                walker = next;
+                continue;
+            }
+            break;
         }
+        return null;
     }
 
     public Key ceiling(Key k) {
