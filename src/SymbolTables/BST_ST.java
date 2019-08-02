@@ -131,19 +131,28 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     but we do know that everything to the left of c has rank [0, ..., c-1], and that the number of items there is the
     size of that new tree. Right? */
     public Key select(int k) {
-        if (isEmpty() || 0 > k || k >= root.size ) return null;
+        if (isEmpty() || k < 0 || size() - 1 < k) return null;
         BST walker = root;
-        int minRank = 0; int maxRank = size(walker.left);
-        while (minRank <= maxRank) {
-            if (maxRank > k) {
-                walker = walker.left;
-            } else if (maxRank < k) {
-                walker = walker.right;
-                minRank += 1;
-            } else return walker.key;
-            maxRank = size(walker) - 1;
+        int minRank = size(root.left) - 1;
+        int maxRank = minRank;
+        BST next;
+        while (true) {
+            /* look at the left -- if the max for the left is less than k, look right; if the min for the right
+            is > k, return current.  No other cases should be possible (I hope). Also, we should test with a next
+            before moving the walker -- if the next is null, break out immediately. */
+            int newMax = maxRank - 1;
+            if (newMax > k) {
+                next = walker.left;
+                maxRank = newMax; minRank = size(next.left) - 1;
+            } else {
+                minRank++; maxRank = minRank + size(walker.right);
+                if (minRank < maxRank) {
+                    next = walker.right;
+                } else return walker.key;
+            }
+            if (next == null) return walker.key;
+            walker = next;
         }
-        return walker.key;
     }
 
     public Key ceiling(Key k) {
