@@ -105,9 +105,14 @@ public class ST_Test_Client {
         StdOut.println("Putting stuff in.");
         StdOut.println("min: " + st.min());
         StdOut.println("max: " + st.max());
-        StdOut.println("select(8): " + st.select(8));
-        StdOut.println("select(1): " + st.select(1));
-        StdOut.println("select(5): " + st.select(5));
+        // check inverse property
+        StdOut.println("rank(select(1)): " + st.rank(st.select(1)));
+        StdOut.println("rank(select(4000)): " + st.rank(st.select(4000)));
+        // note that lower case and capital letters give different results because of compareTo
+        StdOut.println("rank('zzzzz'): " + st.rank("zzzzz"));
+        StdOut.println("select(rank(1)): " + st.select(st.rank("C")));
+        StdOut.println("Delete A."); st.delete("A");
+        StdOut.println("select(rank(1)): " + st.select(st.rank("C")));
         StdOut.println("floor(doge): " + st.floor("doge"));
         StdOut.println("ceiling(doge): " + st.ceiling("doge"));
         StdOut.println("ceiling(zealously): " + st.ceiling("zealously"));

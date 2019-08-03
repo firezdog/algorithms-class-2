@@ -96,6 +96,10 @@ public class OrderedArrayST<Key extends Comparable<Key>, Value> implements Compa
         return false;
     }
 
+    public int rank(Key k) {
+        return search(new Entry(k, null));
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }

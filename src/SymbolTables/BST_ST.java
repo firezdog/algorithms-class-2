@@ -125,6 +125,22 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return result.key;
     }
 
+    public int rank(Key k) {
+        return rank(k, root);
+    }
+
+    private int rank(Key k, BST node) {
+        // a null node clearly is not greater than any other nodes in the tree.
+        if (node == null || k == null) return 0;
+        int rank = size(node.left);
+        /* again, the rank of keys to the left is not affected by the rank of this key -- but the rank of a key
+        to the right has to be one more than the rank of this key */
+        int compare = k.compareTo(node.key);
+        if (compare < 0) return rank(k, node.left);
+        if (compare > 0) return rank + (node.key == null ? 0 : 1) + rank(k, node.right);
+        return rank;
+    }
+
     /* this method involves recursively updating the rank by comparison with the minimum possible rank for a given
     node until we get what we're looking for. */
     private BST select(int rank, BST node) {
@@ -134,8 +150,9 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         * the same rank in the right sub-tree.  Every item in the right sub-tree has a rank of at least the size
         * of the previous node's left + 1 -- because each of these nodes have greater keys than the total of
         * nodes above and to their left.  So whatever rank the item I'm looking for has in the larger sub-tree,
-        * it has that rank - (min + 1) in the new tree. */
-        if (min < rank) return select(rank - min - 1, node.right);
+        * it has that rank - (min + 1) in the new tree. Slight complication -- we don't count nodes with null values
+        * for lazy delete. */
+        if (min < rank) return select(rank - min - (node.value == null ? 0 : 1), node.right);
         /* going left doesn't affect the rank i'm looking for -- an item of rank x in a larger tree will maintain
         rank x in the left sub-tree -- the subset of items smaller than the root of the larger tree. */
         if (min > rank) return select(rank , node.left);
