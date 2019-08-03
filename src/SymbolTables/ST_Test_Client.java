@@ -105,6 +105,8 @@ public class ST_Test_Client {
         StdOut.println("Putting stuff in.");
         StdOut.println("min: " + st.min());
         StdOut.println("max: " + st.max());
+        StdOut.println("select(8): " + st.select(8));
+        StdOut.println("select(1): " + st.select(1));
         StdOut.println("select(5): " + st.select(5));
         StdOut.println("floor(doge): " + st.floor("doge"));
         StdOut.println("ceiling(doge): " + st.ceiling("doge"));

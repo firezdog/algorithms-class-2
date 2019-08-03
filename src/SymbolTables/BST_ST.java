@@ -119,26 +119,30 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return walker.key;
     }
 
-    public Key select(int k) {
-        if (isEmpty() || k < 0 || size() - 1 < k) return null;
-        BST walker = root, next;
-        int maxRank, minRank = 0;
-        while (true) {
-            next = walker.left;
-            maxRank = size(next) - 1;
-            if (k < maxRank) {
-                walker = next;
-                continue;
-            }
-            next = walker.right;
-            minRank++; maxRank = size(walker) + 1;
-            if (minRank < k && k < maxRank) {
-                walker = next;
-                continue;
-            }
-            break;
-        }
-        return null;
+    public Key select(int rank) {
+        BST result = select(rank, root);
+        if (result == null) return null;
+        return result.key;
+    }
+
+    /* this method involves recursively updating the rank by comparison with the minimum possible rank for a given
+    node until we get what we're looking for. */
+    private BST select(int rank, BST node) {
+        if (node == null) return null;
+        int min = size(node.left);
+        /* If I'm looking for an item of rank x in the larger tree and I go right, the item will not have
+        * the same rank in the right sub-tree.  Every item in the right sub-tree has a rank of at least the size
+        * of the previous node's left + 1 -- because each of these nodes have greater keys than the total of
+        * nodes above and to their left.  So whatever rank the item I'm looking for has in the larger sub-tree,
+        * it has that rank - (min + 1) in the new tree. */
+        if (min < rank) return select(rank - min - 1, node.right);
+        /* going left doesn't affect the rank i'm looking for -- an item of rank x in a larger tree will maintain
+        rank x in the left sub-tree -- the subset of items smaller than the root of the larger tree. */
+        if (min > rank) return select(rank , node.left);
+        /* for the root, min is actually the rank -- there are cases I'd think where size(node.left) == rank, but
+        I assume the progress of the algo itself, by updating rank, eliminates them. I guess we put == last to save
+        a compare. */
+        return node;
     }
 
     public Key ceiling(Key k) {
