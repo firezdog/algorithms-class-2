@@ -113,8 +113,9 @@ public class ST_Test_Client {
         StdOut.println("select(rank(1)): " + st.select(st.rank("C")));
         StdOut.println("Delete A."); st.delete("A");
         StdOut.println("select(rank(1)): " + st.select(st.rank("C")));
+        StdOut.println("floor(H): " + st.floor("H"));
         StdOut.println("floor(doge): " + st.floor("doge"));
-        StdOut.println("ceiling(doge): " + st.ceiling("doge"));
+        StdOut.println("ceiling(W): " + st.ceiling("W"));
         StdOut.println("ceiling(zealously): " + st.ceiling("zealously"));
         st.delete("a");
         StdOut.println("floor(a): " + st.floor("a"));

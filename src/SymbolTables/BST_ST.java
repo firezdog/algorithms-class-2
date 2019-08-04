@@ -163,11 +163,45 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     public Key ceiling(Key k) {
-        return null;
+        return ceiling(k, root);
+    }
+
+    /* Some cases: ceiling of a key that is in the tree is that key; ceiling of a key than which everything
+    is greater is the least element in the tree; ceiling of a key than which everything is less is null. */
+    private Key ceiling(Key k, BST node) {
+        if (node == null) return null;
+        int compare = k.compareTo(node.key);
+        // CASE 1: our key is less than the node we're on.
+        if (compare < 0) {
+            /* see if any nodes smaller than the node we're on could be a ceiling for our key. */
+            Key next = ceiling(k, node.left);
+            return next == null ? node.key : next;
+        }
+        // CASE 2: our key is greater than the node we're on. (the simple case)
+        if (compare > 0) {
+            // look for the ceiling of our key in the right subtree (all nodes greater than current).
+            return ceiling(k, node.right);
+        }
+        return k;
     }
 
     public Key floor(Key k) {
-        return null;
+        return floor(k, root);
+    }
+
+    // seems like one of the two, floor / ceiling, can be defined in terms of the other.
+    private Key floor(Key k, BST node) {
+        if (node == null) return null;
+        int compare = k.compareTo(node.key);
+        // keep looking for keys smaller than ours in the left tree
+        if (compare < 0) return floor(k, node.left);
+        // make sure that there are no keys smaller than ours in the right subtree.
+        if (compare > 0) {
+            return ceiling(node.key, node.right);
+//            Key next = floor(k, node.right);
+//            return next == null? node.key : next;
+        }
+        return node.key;
     }
 
     // seems like we can use a queue again -- recursively add nodes to left, node itself, and nodes to right
