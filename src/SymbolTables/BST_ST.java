@@ -189,7 +189,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return floor(k, root);
     }
 
-    // seems like one of the two, floor / ceiling, can be defined in terms of the other.
+    // doesn't seem to work inter-defining floor and ceiling
     private Key floor(Key k, BST node) {
         if (node == null) return null;
         int compare = k.compareTo(node.key);
@@ -197,7 +197,8 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         if (compare < 0) return floor(k, node.left);
         // make sure that there are no keys smaller than ours in the right subtree.
         if (compare > 0) {
-            return ceiling(node.key, node.right);
+            Key next = floor(k, node.right);
+            return next == null ? node.key : next;
         }
         return node.key;
     }
