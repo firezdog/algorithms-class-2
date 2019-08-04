@@ -198,8 +198,6 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         // make sure that there are no keys smaller than ours in the right subtree.
         if (compare > 0) {
             return ceiling(node.key, node.right);
-//            Key next = floor(k, node.right);
-//            return next == null? node.key : next;
         }
         return node.key;
     }
