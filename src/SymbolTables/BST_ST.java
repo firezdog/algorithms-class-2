@@ -1,6 +1,5 @@
 package SymbolTables;
 
-import java.util.Iterator;
 import edu.princeton.cs.algs4.*;
 
 public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<Key, Value> {
@@ -72,6 +71,26 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         BST target = search(root, key);
         if (target == null) return;
         target.value = null; resize(root);
+    }
+
+    // delete the smallest node and return it.
+    private BST deleteMin(BST node) {
+        if (isEmpty()) return null;
+        if (root.left == null) {
+            BST deleted = root;
+            root = root.right;
+            resize(root);
+            return deleted;
+        }
+        BST walker = root;
+        while (walker.left.left != null) {
+            walker = walker.left;
+        }
+        // remember, walker.left.left is null.
+        BST deleted = walker.left;
+        walker.left = deleted.right;
+        resize(root);
+        return deleted;
     }
 
     /* Determine whether a given key is defined in the symbol table. */
