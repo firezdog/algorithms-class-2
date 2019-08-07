@@ -56,7 +56,8 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         if (node == null) return new BST(key, value, 1);
         int compare = node.key.compareTo(key); compares++;
         if (compare < 0) node.right = put(node.right, key, value);
-        if (compare > 0) node.left = put(node.left, key, value);
+        // the "else" below is really important -- even though you'd think compare ! < and > than 0 ?!
+        else if (compare > 0) node.left = put(node.left, key, value);
         else node.value = value;
         node.size = size(node.left) + size(node.right) + 1;
         return node;
@@ -64,7 +65,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     /* Remove a key-value association from the dictionary. */
     public void delete(Key key) {
-        lazyDelete(key);
+        root = deleteMax(root);
     }
 
     private void lazyDelete(Key key) {
@@ -74,7 +75,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     // delete the smallest node and return it.
-    private BST deleteMin(BST node) {
+    private BST iterativeDeleteMin(BST node) {
         if (isEmpty()) return null;
         if (root.left == null) {
             BST deleted = root;
@@ -91,6 +92,27 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         walker.left = deleted.right;
         resize(root);
         return deleted;
+    }
+
+    private BST deleteMin(BST node) {
+        // when we get to the end (half-leaf), return the replacement (guaranteed to be smaller than the parent)
+        if (node == null) return null;
+        if (node.left == null) return node.right;
+        // deleting the min for a tree is equivalent to replacing it's left node with the result of deleting its min
+        node.left = deleteMin(node.left);
+        node.size = size(node.left) + size(node.right) + 1;
+        return node;
+    }
+
+    private BST deleteMax(BST node) {
+        // safety
+        if (node == null) return null;
+        /* the ending node (with no right) is the one we're replacing -- we replace it with its left, which, as above
+        * is still larger than the parent */
+        if (node.right == null) return node.left;
+        node.right = deleteMax(node.right);
+        node.size = size(node.left) + size(node.right) + 1;
+        return node;
     }
 
     /* Determine whether a given key is defined in the symbol table. */
