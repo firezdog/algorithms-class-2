@@ -57,6 +57,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         int compare = node.key.compareTo(key); compares++;
         if (compare < 0) node.right = put(node.right, key, value);
         // the "else" below is really important -- even though you'd think compare ! < and > than 0 ?!
+        // -- because otherwise the "else" is only attached to the second block!
         else if (compare > 0) node.left = put(node.left, key, value);
         else node.value = value;
         node.size = size(node.left) + size(node.right) + 1;
