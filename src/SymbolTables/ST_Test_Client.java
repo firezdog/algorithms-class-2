@@ -164,15 +164,29 @@ public class ST_Test_Client {
         st = initializeST();
         trace();
         print();
+        st.delete("S");
+        st.delete("E");
+        st.delete("A");
+        st.delete("R");
+        st.delete("C");
         st.delete("H");
+        st.delete("E");
+        st.delete("X");
+        st.delete("A");
+        st.delete("M");
+        st.delete("P");
+        st.delete("L");
+        st.delete("E");
+        st.delete("E");
         StdOut.println("=================");
+        StdOut.println(st.size());
         print();
     }
 
     public static void main(String[] args) {
         // APITest();
-        // ExtendedAPITest();
-        DeleteTest();
+        ExtendedAPITest();
+        // DeleteTest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
         // performanceTest(-1, 1);

@@ -80,19 +80,19 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         }
         else {
             boolean replaceWithMax = StdRandom.bernoulli();
-            if (true) {
+            if (replaceWithMax) {
                 if (node.left == null) node = node.right;
                 else {
-                    BST max = max(node.right);
-                    node.right = deleteMax(node.right);
+                    BST max = max(node.left);
+                    node.left = deleteMax(node.left);
                     node.key = max.key;
                     node.value = max.value;
                 }
             } else {
                 if (node.right == null) node = node.left;
                 else {
-                    BST min = min(node.left);
-                    node.left = deleteMin(node.left);
+                    BST min = min(node.right);
+                    node.right = deleteMin(node.right);
                     node.key = min.key;
                     node.value = min.value;
                 }
@@ -305,9 +305,24 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return keys;
     }
 
-    // we need the ceiling for lo, then we build out a queue until we get to the floor for hi
+    // a lazy way to do it -- iterate inorder and add everything to >= lo and <= hi to the queue -- O(N)!
     public Iterable<Key> keys(Key lo, Key hi) {
-        return new Queue<Key>();
+        Queue<Key> q = new Queue<Key>();
+        q = getRange(root, lo, hi, q);
+        return q;
+    }
+
+    private Queue<Key> getRange(BST node, Key lo, Key hi, Queue<Key> q) {
+        if (node == null) return q;
+        int compareLo = node.key.compareTo(lo);
+        int compareHi = node.key.compareTo(hi);
+        // if the key is bigger than lo, keep going left
+        if (compareLo > 0) q = getRange(node.left, lo, hi, q);
+        // then, if the key is between lo and hi, add it to the queue
+        if (compareLo >= 0 && compareHi <= 0) q.enqueue(node.key);
+        // then, if the key is less than the hi, keep going right.
+        if (compareHi < 0) q = getRange(node.right, lo, hi, q);
+        return q;
     }
 
 }
