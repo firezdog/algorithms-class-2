@@ -164,12 +164,8 @@ public class ST_Test_Client {
         st = initializeST();
         trace();
         print();
-        StdOut.println("==================");
-        for (int i = 0; i < 4; i++) {
-            st.delete("Anything");
-            StdOut.println(st.size());
-        }
-        StdOut.println("==================");
+        st.delete("H");
+        StdOut.println("=================");
         print();
     }
 

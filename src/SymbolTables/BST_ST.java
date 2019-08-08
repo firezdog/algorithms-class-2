@@ -66,7 +66,41 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     /* Remove a key-value association from the dictionary. */
     public void delete(Key key) {
-        root = deleteMax(root);
+        root = delete(key, root);
+    }
+
+    private BST delete(Key key, BST node) {
+        if (node == null) return null;
+        int compare = key.compareTo(node.key);
+        if (compare < 0) {
+            node.left = delete(key, node.left);
+        }
+        else if (compare > 0) {
+            node.right = delete(key, node.right);
+        }
+        else {
+            boolean replaceWithMax = StdRandom.bernoulli();
+            if (true) {
+                if (node.left == null) node = node.right;
+                else {
+                    BST max = max(node.right);
+                    node.right = deleteMax(node.right);
+                    node.key = max.key;
+                    node.value = max.value;
+                }
+            } else {
+                if (node.right == null) node = node.left;
+                else {
+                    BST min = min(node.left);
+                    node.left = deleteMin(node.left);
+                    node.key = min.key;
+                    node.value = min.value;
+                }
+            }
+        }
+        if (node == null) return null;
+        node.size = size(node.left) + size(node.right) + 1;
+        return node;
     }
 
     private void lazyDelete(Key key) {
@@ -144,21 +178,25 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     // strategy: go left until you can go left no more
     public Key min() {
         if (isEmpty()) return null;
-        BST walker = root;
-        while (walker.left != null) {
-            walker = walker.left;
-        }
-        return walker.key;
+        return min(root).key;
+    }
+
+    private BST min(BST node) {
+        if (node == null) return null;
+        if (node.left == null) return node;
+        return min(node.left);
     }
 
     // strategy: go right until you can go right no more
     public Key max() {
         if (isEmpty()) return null;
-        BST walker = root;
-        while (walker.left != null) {
-            walker = walker.right;
-        }
-        return walker.key;
+        return max(root).key;
+    }
+
+    private BST max(BST node) {
+        if (node == null) return null;
+        if (node.right == null) return node;
+        return max(node.right);
     }
 
     public Key select(int rank) {
