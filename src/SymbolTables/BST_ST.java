@@ -325,4 +325,20 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return q;
     }
 
+    public void show() {
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setXscale(-20, 20);
+        StdDraw.setYscale(-20, 20);
+        show(root, 0, 15, 10, 2);
+    }
+
+    private void show(BST node, double x, double y, double xOffset, double yOffset) {
+        if (node == null) return;
+        StdDraw.line(x, y, x - xOffset, y - yOffset);
+        show(node.left, x - xOffset, y - yOffset, xOffset / 2, yOffset);
+        StdDraw.text(x, y, node.key.toString());
+        StdDraw.line(x, y, x + xOffset, y - yOffset);
+        show(node.right, x + xOffset, y - yOffset, xOffset / 2, yOffset);
+    }
+
 }

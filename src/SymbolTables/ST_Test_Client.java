@@ -183,9 +183,18 @@ public class ST_Test_Client {
         print();
     }
 
+    static void DrawTest() {
+        BST_ST<String, Integer> st = new BST_ST<>();
+        while (!StdIn.isEmpty()) {
+            st.put(StdIn.readString(), 1);
+        }
+        st.show();
+    }
+
     public static void main(String[] args) {
+        DrawTest();
         // APITest();
-        ExtendedAPITest();
+        // ExtendedAPITest();
         // DeleteTest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
         * I guess you *could* just double until you run out of input and get some data out of that... */
