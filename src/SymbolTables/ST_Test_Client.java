@@ -1,10 +1,6 @@
 package SymbolTables;
 
-import com.sun.javafx.geom.Vec2d;
-import com.sun.tools.corba.se.idl.constExpr.Or;
 import edu.princeton.cs.algs4.*;
-
-import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class ST_Test_Client {

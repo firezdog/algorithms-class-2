@@ -1,6 +1,8 @@
 package SymbolTables;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<Key, Value> {
 

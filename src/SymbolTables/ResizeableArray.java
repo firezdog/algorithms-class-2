@@ -2,8 +2,6 @@ package SymbolTables;
 
 import edu.princeton.cs.algs4.StdOut;
 
-import java.util.Arrays;
-
 @SuppressWarnings("all")
 public class ResizeableArray<T extends Comparable<T>> {
     private T[] arr;
