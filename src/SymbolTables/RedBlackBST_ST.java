@@ -5,6 +5,7 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> implements Compa
     private static final boolean RED = true;
     private static final boolean BLACK = false;
 
+    // region redBlackBST
     private class RedBlackBST {
         private Value value;
         private Key key;
@@ -30,19 +31,37 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> implements Compa
         RedBlackBST newRoot = node.right;
         node.right = newRoot.left;
         newRoot.left = node;
+
         newRoot.color = node.color;
         node.color = RED;
+
         newRoot.size = node.size;
         node.size = size(node.left) + size(node.right) + 1;
+
+        return newRoot;
     }
 
+    // reverse of the above.
     private RedBlackBST rotateRight(RedBlackBST node) {
+        RedBlackBST newRoot = node.left;
+        node.left = newRoot.right;
+        newRoot.right = node;
+
+        newRoot.color = node.color;
+        node.color = RED;
+
+        newRoot.size = node.size;
+        node.size = size(node.left) + size(node.right) + 1;
+
+        return newRoot;
     }
 
     private boolean isRed (RedBlackBST node) {
         if (node == null) return false;
         return node.color == RED; // this is more readable, but technically we could just return node.color
     }
+
+    // endregion
 
     @Override
     public Comparable min() {
