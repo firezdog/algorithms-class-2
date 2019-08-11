@@ -10,7 +10,7 @@ public class ST_Test_Client {
     private static int totalCompares = 0;
 
     static ComparableST<String, Integer> initializeST() {
-        return new BST_ST<>();
+        return new RedBlackBST_ST<>();
     }
 
     static void trace() {
@@ -188,8 +188,8 @@ public class ST_Test_Client {
     }
 
     public static void main(String[] args) {
-        DrawTest();
-        // APITest();
+        // DrawTest();
+        APITest();
         // ExtendedAPITest();
         // DeleteTest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.

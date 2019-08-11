@@ -10,7 +10,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     private BST root;
     private int compares;
 
-    private class BST {
+    class BST {
         private Key key;
         private Value value;
         private BST left, right;
@@ -27,9 +27,6 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         int compares = this.compares;
         this.compares = 0;
         return compares;
-    }
-
-    public BST_ST() {
     }
 
     /* Find the data structure associated with a given key -- may need to change return type */
@@ -54,7 +51,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         root = put(root, key, value);
     }
 
-    public BST put(BST node, Key key, Value value) {
+    private BST put(BST node, Key key, Value value) {
         if (node == null) return new BST(key, value, 1);
         int compare = node.key.compareTo(key); compares++;
         if (compare < 0) node.right = put(node.right, key, value);
@@ -165,7 +162,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return size(root);
     }
 
-    private int size(BST node) {
+    int size(BST node) {
         if (node == null) return 0;
         if (node.value == null) return size(node.left) + size(node.right);
         return node.size;
