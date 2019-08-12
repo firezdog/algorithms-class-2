@@ -7,14 +7,14 @@ import edu.princeton.cs.algs4.StdRandom;
 public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<Key, Value> {
 
     /* The number of key-value pairs in the symbol table. */
-    private BST root;
-    private int compares;
+    protected BST root;
+    protected int compares;
 
     class BST {
-        private Key key;
-        private Value value;
-        private BST left, right;
-        private int size;
+        protected Key key;
+        protected Value value;
+        protected BST left, right;
+        protected int size;
 
         BST(Key k, Value v, int s) {
             key = k;

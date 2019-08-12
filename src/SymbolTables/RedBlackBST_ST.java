@@ -7,11 +7,8 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
 
     // region redBlackBST
     private class RedBlackBST extends BST_ST<Key, Value>.BST {
-        private Value value;
-        private Key key;
         private boolean color = BLACK;
         private RedBlackBST left, right;
-        private int size;
 
         RedBlackBST(Key key, Value value, int size, boolean color) {
             super(key, value, size);
@@ -62,14 +59,31 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
     // endregion
 
-    RedBlackBST root;
+    public Value get(Key key) {
+        return get(key, (RedBlackBST) root);
+    }
+
+    private Value get(Key key, RedBlackBST node) {
+        if (node == null) return null;
+        int compare = key.compareTo(node.key);
+        if (compare < 0) return get(key, node.left);
+        if (compare > 0) return get(key, node.right);
+        return node.value;
+    }
 
     public void put(Key key, Value value) {
-        root = put(key, value, root);
+        if (root == null) root = new RedBlackBST(key, value, 1, BLACK);
+        else root = put(key, value, (RedBlackBST) root);
     }
 
     private RedBlackBST put(Key key, Value value, RedBlackBST node) {
-        return null;
+        if (node == null) return new RedBlackBST(key, value, 1, RED);
+        int compare = key.compareTo(node.key);
+        if (compare < 0) node.left = put(key, value, node.left);
+        else if (compare > 0) node.right = put(key, value, node.right);
+        else node.value = value;
+        node.size = size(node.left) + size(node.right) + 1;
+        return node;
     }
 
 }
