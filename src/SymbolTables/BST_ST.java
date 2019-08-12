@@ -331,7 +331,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         show(root, 0, 15, 10, 2);
     }
 
-    private void show(BST node, double x, double y, double xOffset, double yOffset) {
+    protected void show(BST node, double x, double y, double xOffset, double yOffset) {
         if (node == null) return;
         StdDraw.line(x, y, x - xOffset, y - yOffset);
         show(node.left, x - xOffset, y - yOffset, xOffset / 2, yOffset);

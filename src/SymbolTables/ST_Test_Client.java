@@ -41,8 +41,8 @@ public class ST_Test_Client {
         Note that scale for y will reflect for performance -- the worse the performance, the closer it needs to be to
         size of StdIn. */
         StdDraw.setCanvasSize(500, 100);
-        StdDraw.setXscale(0, 10000);
-        StdDraw.setYscale(0, 100);
+        StdDraw.setXscale(0, 10000000);
+        StdDraw.setYscale(0, 25);
 
         int seen = 0;
 
@@ -180,7 +180,7 @@ public class ST_Test_Client {
     }
 
     static void DrawTest() {
-        BST_ST<String, Integer> st = new BST_ST<>();
+        RedBlackBST_ST<String, Integer> st = new RedBlackBST_ST<>();
         while (!StdIn.isEmpty()) {
             st.put(StdIn.readString(), 1);
         }
@@ -188,8 +188,8 @@ public class ST_Test_Client {
     }
 
     public static void main(String[] args) {
-        // DrawTest();
-        APITest();
+        DrawTest();
+        // APITest();
         // ExtendedAPITest();
         // DeleteTest();
         /* No good way to do a doubling test that I know of so far because StdIn does not get reset between calls.
