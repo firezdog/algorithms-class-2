@@ -44,6 +44,51 @@ class RedBlackBST_STTest {
         assertEquals(3, st.get("E"));
     }
 
+    // TODO
+    void nodeCountCheck() {
+
+    }
+
+    // TODO
+    void nodeOrderCheck() {
+
+    }
+
+    // TODO
+    void nodeNoDuplicateCheck() {
+
+    }
+
+    // TODO
+    void isBST() {
+        // Check:
+        // 1. Count for node is correct
+        // 2. Order for node is correct (all nodes are between
+        // a min and max, recursively?)
+        // 3. There are no duplicates
+    }
+
+    // TODO
+    void is23() {
+        // Check:
+        // 1. No node is connected to two red links
+        // 2. There are no right-leaning red links
+    }
+
+    // TODO
+    void isBalanced() {
+        // Check:
+        // All paths have same number of black links
+    }
+
+    // TODO
+    void isRedBlack() {
+        // Check:
+        // 1. is BST
+        // 2. is23
+        // 3. isBalanced
+    }
+
     void trace() {
         int i = 0;
         StdIn.fromFile("data/trace.txt");

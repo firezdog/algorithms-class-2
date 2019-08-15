@@ -61,6 +61,7 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
     // endregion
 
+    // the inherited code also works in place of this.
     public Value get(Key key) {
         return get(key, (RedBlackBST) root);
     }
@@ -79,7 +80,6 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
 
     private RedBlackBST put(Key key, Value value, RedBlackBST node) {
-        RedBlackBST node_copy = node;
         if (node == null) return new RedBlackBST(key, value, 1, RED);
         int compare = key.compareTo(node.key); compares++;
         if (compare < 0) node.left = put(key, value, (RedBlackBST) node.left);
@@ -95,7 +95,11 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         return node;
     }
 
-    @Override
+    // TODO
+    public void delete(Key key) {
+
+    }
+
     protected void show(BST node, double x, double y, double xOffset, double yOffset) {
         if (node == null) return;
         if (isRed((RedBlackBST) node.left)) StdDraw.setPenColor(StdDraw.RED);
