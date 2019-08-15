@@ -1,95 +1,61 @@
 package SymbolTables;
 
 import edu.princeton.cs.algs4.StdDraw;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<Key, Value> {
 
-    private static final boolean RED = true;
-    private static final boolean BLACK = false;
-
-    // region redBlackBST
-    private class RedBlackBST extends BST_ST<Key, Value>.BST {
-        private boolean color = BLACK;
-
-        RedBlackBST(Key key, Value value, int size, boolean color) {
-            super(key, value, size);
-            this.color = color;
-        }
+    // region RedBlackBST wrappers
+    private boolean isRed(RedBlackBST<Key, Value> node) {
+        return RedBlackBST.isRed(node);
     }
 
-    /* Take the node to the right and make it a new root -- keep the new root's right, but move its left to
-    * the right of the old node. */
-    private RedBlackBST rotateLeft(RedBlackBST node) {
-        RedBlackBST newRoot = (RedBlackBST) node.right;
-        node.right = newRoot.left;
-        newRoot.left = node;
-
-        newRoot.color = node.color;
-        node.color = RED;
-
-        newRoot.size = node.size;
-        node.size = size(node.left) + size(node.right) + 1;
-
-        return newRoot;
+    private int size(BST<Key, Value> node) {
+        return RedBlackBST.size(node);
     }
 
-    // reverse of the above.
-    private RedBlackBST rotateRight(RedBlackBST node) {
-        RedBlackBST newRoot = (RedBlackBST) node.left;
-        node.left = newRoot.right;
-        newRoot.right = node;
-
-        newRoot.color = node.color;
-        node.color = RED;
-
-        newRoot.size = node.size;
-        node.size = size(node.left) + size(node.right) + 1;
-
-        return newRoot;
+    private RedBlackBST<Key, Value> rotateLeft(RedBlackBST<Key, Value> node) {
+        return RedBlackBST.rotateLeft(node);
     }
 
-    private boolean isRed (RedBlackBST node) {
-        if (node == null) return false;
-        return node.color == RED; // this is more readable, but technically we could just return node.color
+    private RedBlackBST<Key, Value> rotateRight(RedBlackBST<Key, Value> node) {
+        return RedBlackBST.rotateRight(node);
     }
 
-    // flips colors of the children from red to black and color of parent from black to red.
-    private void flipColors(RedBlackBST node) {
-        node.color = RED;
-        ((RedBlackBST) node.left).color = ((RedBlackBST) node.right).color = BLACK;
+    private void flipColors(RedBlackBST<Key, Value> node) {
+        RedBlackBST.flipColors(node);
     }
     // endregion
 
+    // region basic functionality (get, put, delete)
     // the inherited code also works in place of this.
     public Value get(Key key) {
-        return get(key, (RedBlackBST) root);
+        return get(key, (RedBlackBST<Key, Value>) root);
     }
 
-    private Value get(Key key, RedBlackBST node) {
+    private Value get(Key key, RedBlackBST<Key, Value> node) {
         if (node == null) return null;
         int compare = key.compareTo(node.key);
-        if (compare < 0) return get(key, (RedBlackBST) node.left);
-        if (compare > 0) return get(key, (RedBlackBST) node.right);
+        if (compare < 0) return get(key, (RedBlackBST<Key, Value>) node.left);
+        if (compare > 0) return get(key, (RedBlackBST<Key, Value>) node.right);
         return node.value;
     }
 
     public void put(Key key, Value value) {
-        root = put(key, value, (RedBlackBST) root);
-        ((RedBlackBST) root).color = BLACK;
+        root = put(key, value, (RedBlackBST<Key, Value>) root);
+        ((RedBlackBST<Key, Value>) root).blacken();
     }
 
-    private RedBlackBST put(Key key, Value value, RedBlackBST node) {
-        if (node == null) return new RedBlackBST(key, value, 1, RED);
+    private RedBlackBST<Key, Value> put(Key key, Value value, RedBlackBST<Key, Value> node) {
+        if (node == null) return new RedBlackBST<>(key, value, 1, RedBlackBST.RED);
         int compare = key.compareTo(node.key); compares++;
-        if (compare < 0) node.left = put(key, value, (RedBlackBST) node.left);
-        else if (compare > 0) node.right = put(key, value, (RedBlackBST) node.right);
+        if (compare < 0) node.left = put(key, value, (RedBlackBST<Key, Value>) node.left);
+        else if (compare > 0) node.right = put(key, value, (RedBlackBST<Key, Value>) node.right);
         else node.value = value;
 
-        if (isRed((RedBlackBST) node.right) && !isRed((RedBlackBST) node.left)) node = rotateLeft(node);
+        if (isRed((RedBlackBST<Key, Value>) node.right) && !isRed((RedBlackBST<Key, Value>) node.left)) node = rotateLeft(node);
         // if the left node is red, it of course exists
-        if (isRed((RedBlackBST) node.left) && isRed((RedBlackBST) node.left.left)) node = rotateRight(node);
-        if (isRed((RedBlackBST) node.left) && isRed((RedBlackBST) node.right)) flipColors(node);
+        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.left.left)) node = rotateRight(node);
+        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.right)) flipColors(node);
 
         node.size = size(node.left) + size(node.right) + 1;
         return node;
@@ -99,20 +65,44 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     public void delete(Key key) {
 
     }
+    // endregion
 
     protected void show(BST node, double x, double y, double xOffset, double yOffset) {
         if (node == null) return;
-        if (isRed((RedBlackBST) node.left)) StdDraw.setPenColor(StdDraw.RED);
+        if (isRed((RedBlackBST<Key, Value>) node.left)) StdDraw.setPenColor(StdDraw.RED);
         else StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.line(x, y, x - xOffset, y - yOffset);
         show(node.left, x - xOffset, y - yOffset, xOffset / 2, yOffset);
-        if (isRed((RedBlackBST) node)) StdDraw.setPenColor(StdDraw.RED);
+        if (isRed((RedBlackBST<Key, Value>) node)) StdDraw.setPenColor(StdDraw.RED);
         else StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.text(x, y, node.key.toString());
-        if (isRed((RedBlackBST) node.right)) StdDraw.setPenColor(StdDraw.RED);
+        if (isRed((RedBlackBST<Key, Value>) node.right)) StdDraw.setPenColor(StdDraw.RED);
         else StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.line(x, y, x + xOffset, y - yOffset);
         show(node.right, x + xOffset, y - yOffset, xOffset / 2, yOffset);
     }
+
+    // region test utils
+    // TODO
+    public void is23() {
+        // Check:
+        // 1. No node is connected to two red links
+        // 2. There are no right-leaning red links
+    }
+
+    // TODO
+    public void isBalanced() {
+        // Check:
+        // All paths have same number of black links
+    }
+
+    // TODO
+    public void isRedBlack() {
+        // Check:
+        // 1. is BST
+        // 2. is23
+        // 3. isBalanced
+    }
+    // endregion
 
 }

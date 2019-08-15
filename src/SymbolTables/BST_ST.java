@@ -7,21 +7,8 @@ import edu.princeton.cs.algs4.StdRandom;
 public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<Key, Value> {
 
     /* The number of key-value pairs in the symbol table. */
-    protected BST root;
+    protected BST<Key, Value> root;
     protected int compares;
-
-    class BST {
-        protected Key key;
-        protected Value value;
-        protected BST left, right;
-        protected int size;
-
-        BST(Key k, Value v, int s) {
-            key = k;
-            value = v;
-            size = s;
-        }
-    }
 
     public int compares() {
         int compares = this.compares;
@@ -30,7 +17,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     /* Find the data structure associated with a given key -- may need to change return type */
-    public BST search(BST walker, Key key) {
+    public BST<Key, Value> search(BST<Key, Value> walker, Key key) {
         if (walker == null) return null;
         int compare = walker.key.compareTo(key); compares++;
         if (compare > 0) return search(walker.left, key);
@@ -41,7 +28,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     /* Get the value associated with a given key in the symbol table. -- Some duplication of what occurs
      * in put. */
     public Value get(Key key) {
-        BST result = search(root, key);
+        BST<Key, Value> result = search(root, key);
         return result == null ? null : result.value;
     }
 
@@ -51,15 +38,15 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         root = put(root, key, value);
     }
 
-    private BST put(BST node, Key key, Value value) {
-        if (node == null) return new BST(key, value, 1);
+    private BST<Key, Value> put(BST<Key, Value> node, Key key, Value value) {
+        if (node == null) return new BST<>(key, value, 1);
         int compare = node.key.compareTo(key); compares++;
         if (compare < 0) node.right = put(node.right, key, value);
         // the "else" below is really important -- even though you'd think compare ! < and > than 0 ?!
         // -- because otherwise the "else" is only attached to the second block!
         else if (compare > 0) node.left = put(node.left, key, value);
         else node.value = value;
-        node.size = size(node.left) + size(node.right) + 1;
+        node.size = BST.size(node.left) + BST.size(node.right) + 1;
         return node;
     }
 
@@ -68,7 +55,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         root = delete(key, root);
     }
 
-    private BST delete(Key key, BST node) {
+    private BST<Key, Value> delete(Key key, BST<Key, Value> node) {
         if (node == null) return null;
         int compare = key.compareTo(node.key);
         if (compare < 0) {
@@ -82,7 +69,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
             if (replaceWithMax) {
                 if (node.left == null) node = node.right;
                 else {
-                    BST max = max(node.left);
+                    BST<Key, Value> max = max(node.left);
                     node.left = deleteMax(node.left);
                     node.key = max.key;
                     node.value = max.value;
@@ -90,7 +77,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
             } else {
                 if (node.right == null) node = node.left;
                 else {
-                    BST min = min(node.right);
+                    BST<Key, Value> min = min(node.right);
                     node.right = deleteMin(node.right);
                     node.key = min.key;
                     node.value = min.value;
@@ -98,7 +85,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
             }
         }
         if (node == null) return null;
-        node.size = size(node.left) + size(node.right) + 1;
+        node.size = BST.size(node.left) + BST.size(node.right) + 1;
         return node;
     }
 
@@ -128,24 +115,24 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return deleted;
     }
 
-    private BST deleteMin(BST node) {
+    private BST<Key, Value> deleteMin(BST<Key, Value> node) {
         // when we get to the end (half-leaf), return the replacement (guaranteed to be smaller than the parent)
         if (node == null) return null;
         if (node.left == null) return node.right;
         // deleting the min for a tree is equivalent to replacing it's left node with the result of deleting its min
         node.left = deleteMin(node.left);
-        node.size = size(node.left) + size(node.right) + 1;
+        node.size = BST.size(node.left) + BST.size(node.right) + 1;
         return node;
     }
 
-    private BST deleteMax(BST node) {
+    private BST<Key, Value> deleteMax(BST<Key, Value> node) {
         // safety
         if (node == null) return null;
         /* the ending node (with no right) is the one we're replacing -- we replace it with its left, which, as above
         * is still larger than the parent */
         if (node.right == null) return node.left;
         node.right = deleteMax(node.right);
-        node.size = size(node.left) + size(node.right) + 1;
+        node.size = BST.size(node.left) + BST.size(node.right) + 1;
         return node;
     }
 
@@ -155,23 +142,17 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     public boolean isEmpty() {
-        return size(root) == 0;
+        return BST.size(root) == 0;
     }
 
     public int size() {
-        return size(root);
-    }
-
-    int size(BST node) {
-        if (node == null) return 0;
-        if (node.value == null) return size(node.left) + size(node.right);
-        return node.size;
+        return BST.size(root);
     }
 
     private void resize(BST node) {
         if (node == null) return;
         resize(node.left); resize(node.right);
-        node.size = size(node.left) + size(node.right) + (node.value == null ? 0 : 1);
+        node.size = BST.size(node.left) + BST.size(node.right) + (node.value == null ? 0 : 1);
     }
 
     // strategy: go left until you can go left no more
@@ -180,7 +161,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return min(root).key;
     }
 
-    private BST min(BST node) {
+    private BST<Key, Value> min(BST<Key, Value> node) {
         if (node == null) return null;
         if (node.left == null) return node;
         return min(node.left);
@@ -192,14 +173,14 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return max(root).key;
     }
 
-    private BST max(BST node) {
+    private BST<Key, Value> max(BST<Key, Value> node) {
         if (node == null) return null;
         if (node.right == null) return node;
         return max(node.right);
     }
 
     public Key select(int rank) {
-        BST result = select(rank, root);
+        BST<Key, Value> result = select(rank, root);
         if (result == null) return null;
         return result.key;
     }
@@ -208,10 +189,10 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return rank(k, root);
     }
 
-    private int rank(Key k, BST node) {
+    private int rank(Key k, BST<Key, Value> node) {
         // a null node clearly is not greater than any other nodes in the tree.
         if (node == null || k == null) return 0;
-        int rank = size(node.left);
+        int rank = BST.size(node.left);
         /* again, the rank of keys to the left is not affected by the rank of this key -- but the rank of a key
         to the right has to be one more than the rank of this key */
         int compare = k.compareTo(node.key);
@@ -222,9 +203,9 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     /* this method involves recursively updating the rank by comparison with the minimum possible rank for a given
     node until we get what we're looking for. */
-    private BST select(int rank, BST node) {
+    private BST<Key, Value> select(int rank, BST<Key, Value> node) {
         if (node == null) return null;
-        int min = size(node.left);
+        int min = BST.size(node.left);
         /* If I'm looking for an item of rank x in the larger tree and I go right, the item will not have
         * the same rank in the right sub-tree.  Every item in the right sub-tree has a rank of at least the size
         * of the previous node's left + 1 -- because each of these nodes have greater keys than the total of
@@ -247,7 +228,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     /* Some cases: ceiling of a key that is in the tree is that key; ceiling of a key than which everything
     is greater is the least element in the tree; ceiling of a key than which everything is less is null. */
-    private Key ceiling(Key k, BST node) {
+    private Key ceiling(Key k, BST<Key, Value> node) {
         if (node == null) return null;
         int compare = k.compareTo(node.key);
         // CASE 1: our key is less than the node we're on.
@@ -269,7 +250,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     // doesn't seem to work inter-defining floor and ceiling
-    private Key floor(Key k, BST node) {
+    private Key floor(Key k, BST<Key, Value> node) {
         if (node == null) return null;
         int compare = k.compareTo(node.key);
         // keep looking for keys smaller than ours in the left tree
@@ -288,7 +269,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return order(keys, root);
     }
 
-    private Queue<Key> order(Queue<Key> keys, BST node) {
+    private Queue<Key> order(Queue<Key> keys, BST<Key, Value> node) {
         if (node == null) return keys;
         if (node.left == null) {
             // for lazy delete
@@ -311,7 +292,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return q;
     }
 
-    private Queue<Key> getRange(BST node, Key lo, Key hi, Queue<Key> q) {
+    private Queue<Key> getRange(BST<Key, Value> node, Key lo, Key hi, Queue<Key> q) {
         if (node == null) return q;
         int compareLo = node.key.compareTo(lo);
         int compareHi = node.key.compareTo(hi);
@@ -339,5 +320,32 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         StdDraw.line(x, y, x + xOffset, y - yOffset);
         show(node.right, x + xOffset, y - yOffset, xOffset / 2, yOffset);
     }
+
+    // region test utils
+    // TODO
+    public boolean nodeCountCheck() {
+        // Count for node is correct
+        return BST.nodeCountCheck(root);
+    }
+
+    // TODO
+    public void nodeOrderCheck() {
+
+    }
+
+    // TODO
+    public void nodeNoDuplicateCheck() {
+
+    }
+
+    // TODO
+    public void isBST() {
+        // Check:
+        // 1. nodeCountCheck
+        // 2. Order for node is correct (all nodes are between
+        // a min and max, recursively?)
+        // 3. There are no duplicates
+    }
+    // endregion
 
 }
