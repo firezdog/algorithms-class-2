@@ -50,6 +50,12 @@ class RedBlackBST_STTest {
         assertTrue(st.nodeCountCheck());
     }
 
+    @Test
+    void testNodeOrder() {
+        trace();
+        assertTrue(st.nodeOrderCheck());
+    }
+
     void trace() {
         int i = 0;
         StdIn.fromFile("data/trace.txt");

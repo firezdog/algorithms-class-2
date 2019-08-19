@@ -323,24 +323,25 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     // region test utils
     // Count for node is correct
-    public boolean nodeCountCheck() {
-        return BST.nodeCountCheck(root);
+    boolean nodeCountCheck() {
+        if (isEmpty()) return true;
+        return root.nodeCountCheck();
     }
 
-    // TODO
     // Check that given a range, all of a node's sub-nodes (including itself) are within
     // that range.
-    public void nodeOrderCheck() {
-        return BST.nodeOrderCheck(root);
+    boolean nodeOrderCheck() {
+        if (isEmpty()) return true;
+        return root.nodeOrderCheck();
     }
 
     // TODO
-    public void nodeNoDuplicateCheck() {
+    void nodeNoDuplicateCheck() {
 
     }
 
     // TODO
-    public void isBST() {
+    void isBST() {
         // Check:
         // 1. nodeCountCheck
         // 2. Order for node is correct (all nodes are between

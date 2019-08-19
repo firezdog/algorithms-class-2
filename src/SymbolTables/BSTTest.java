@@ -12,11 +12,12 @@ class BSTTest {
 
     @BeforeEach
     void setup() {
-        bst = new BST<>("A", 1, 1);
+        // TODO should just have overloaded method for no args?
+        bst = new BST<>(null, null, 1);
     }
 
     @Nested
-    class testNodeCount {
+    class TestNodeCount {
         @Test
         void testNodeCountCheckForSingleNode() {
             assertTrue(BST.nodeCountCheck(bst));
@@ -51,11 +52,11 @@ class BSTTest {
 
         @Test
         void testNodeCountForIncorrectSub() {
-            bst.left = new BST("B", 1, 2);
-            bst.left.left = new BST("C", 1, 1);
-            bst.right = new BST("D", 1, 2);
-            bst.right.left = new BST("E", 1, 1);
-            bst.right.right = new BST("F", 1, 1);
+            bst.left = new BST<>("B", 1, 2);
+            bst.left.left = new BST<>("C", 1, 1);
+            bst.right = new BST<>("D", 1, 2);
+            bst.right.left = new BST<>("E", 1, 1);
+            bst.right.right = new BST<>("F", 1, 1);
             bst.size = 6;
             assertFalse(BST.nodeCountCheck(bst));
         }
@@ -70,6 +71,34 @@ class BSTTest {
             bst.right.right = bst.left;
             bst.size = 6;
             assertFalse(BST.nodeCountCheck(bst));
+        }
+    }
+
+    @Nested
+    class TestNodeOrder {
+        @Test
+        void testOrderForNull() {
+            assertTrue(BST.nodeOrderCheck("a", "z", null));
+        }
+
+        @Test
+        void testOrderForCorrect() {
+            bst = new BST<>("G", 0, 1);
+            bst.left = new BST<>("F", 0, 1);
+            bst.left.left = new BST<>("B", 0, 1);
+            bst.right = new BST<>("N", 0, 1);
+            bst.right.right = new BST<>("Z", 0, 1);
+            assertTrue(bst.nodeOrderCheck());
+        }
+
+        @Test
+        void testOrderForIncorrect() {
+            bst = new BST<>("G", 0, 1);
+            bst.left = new BST<>("F", 0, 1);
+            bst.left.left = new BST<>("B", 0, 1);
+            bst.left.right = new BST<>("Z", 0, 1);
+            bst.right = new BST<>("N", 0, 1);
+            assertFalse(bst.nodeOrderCheck());
         }
     }
 
