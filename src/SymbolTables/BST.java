@@ -25,4 +25,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
 
+    public static <Key extends Comparable<Key>, Value> boolean
+    nodeOrderCheck(Key lo, Key hi, BST<Key,Value> node) {
+        // you only need to compare left to lo, right to hi, and node between the two (or between left and right)
+    }
+
 }

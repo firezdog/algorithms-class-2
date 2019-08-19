@@ -328,8 +328,10 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     // TODO
+    // Check that given a range, all of a node's sub-nodes (including itself) are within
+    // that range.
     public void nodeOrderCheck() {
-
+        return BST.nodeOrderCheck(root);
     }
 
     // TODO
