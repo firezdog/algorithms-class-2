@@ -59,6 +59,18 @@ class BSTTest {
             bst.size = 6;
             assertFalse(BST.nodeCountCheck(bst));
         }
+
+        @Test
+        // this works, I'm not sure why :p
+        void testNodeCountForCycle() {
+            bst.left = new BST<>("B", 1, 2);
+            bst.left.left = bst.right;
+            bst.right = new BST<>("D", 1, 3);
+            bst.right.left = new BST<>("E", 1, 1);
+            bst.right.right = bst.left;
+            bst.size = 6;
+            assertFalse(BST.nodeCountCheck(bst));
+        }
     }
 
 }

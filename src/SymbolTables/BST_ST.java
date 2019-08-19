@@ -322,9 +322,8 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     // region test utils
-    // TODO
+    // Count for node is correct
     public boolean nodeCountCheck() {
-        // Count for node is correct
         return BST.nodeCountCheck(root);
     }
 
