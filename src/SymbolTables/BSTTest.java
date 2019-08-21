@@ -100,6 +100,7 @@ class BSTTest {
             bst.right = new BST<>("N", 0, 1);
             assertFalse(bst.nodeOrderCheck());
         }
+
     }
 
 }

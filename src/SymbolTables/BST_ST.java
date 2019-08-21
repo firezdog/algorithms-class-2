@@ -336,7 +336,14 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     boolean nodeNoDuplicateCheck() {
-        // this test assumes that the BST being checked is ordered
+        // this test is supposed to assume that the BST being checked is ordered
+        // it seems like with the way put works, we would only need to check the right for duplicates?
+        /* another idea might be that the order check checks that everything in the tree is <= or >= a max and min,
+        * updated according to the last node checked -- whereas this test demands more stringently that all nodes be
+        * < or > (the tree would fail if we used this criterion for the first test, since we originally use -- and
+        * update with -- values that are in the tree */
+        /* Never-mind -- I think I understand.  If we traverse the tree (inorder) and it is not in order then this test --
+        * which seems like it is best implemented by using an in-order traversal -- will fail. */
         if (isEmpty()) return true;
         return root.nodeNoDuplicateCheck();
     }
