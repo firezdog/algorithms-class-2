@@ -46,4 +46,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return false;
     }
 
+    public boolean nodeNoDuplicateCheck(boolean found) {
+    }
+
 }

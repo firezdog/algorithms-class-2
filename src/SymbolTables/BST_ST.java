@@ -250,7 +250,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
     }
 
     // doesn't seem to work inter-defining floor and ceiling
-    private Key floor(Key k, BST<Key, Value> node) {
+    private Key floor(Key k, BST<Key,   Value> node) {
         if (node == null) return null;
         int compare = k.compareTo(node.key);
         // keep looking for keys smaller than ours in the left tree
@@ -335,9 +335,10 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return root.nodeOrderCheck();
     }
 
-    // TODO
-    void nodeNoDuplicateCheck() {
-
+    boolean nodeNoDuplicateCheck() {
+        // this test assumes that the BST being checked is ordered
+        if (isEmpty()) return true;
+        return root.nodeNoDuplicateCheck();
     }
 
     // TODO
