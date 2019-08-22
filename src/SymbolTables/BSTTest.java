@@ -95,10 +95,44 @@ class BSTTest {
         void testOrderForIncorrect() {
             bst = new BST<>("G", 0, 1);
             bst.left = new BST<>("F", 0, 1);
-            bst.left.left = new BST<>("B", 0, 1);
-            bst.left.right = new BST<>("Z", 0, 1);
+            bst.left.left = new BST<>("Z", 0, 1);
             bst.right = new BST<>("N", 0, 1);
+            bst.right.right = new BST<>("B", 0, 1);
             assertFalse(bst.nodeOrderCheck());
+        }
+    }
+
+    @Nested
+    class TestNodeDuplication {
+        @Test
+        void testWithDuplicates() {
+            bst = new BST<>("A", 0, 1);
+            bst.right = new BST<>("A", 0, 1);
+            bst.right.right = new BST<>("R", 0, 1);
+            bst.right.right.left = new BST<>("D", 0, 1);
+            bst.right.right.right = new BST<>("V", 0, 1);
+            bst.right.right.right.left = new BST<>("R", 0, 1);
+            bst.right.right.left.left = new BST<>("A", 0, 1);
+            bst.right.right.left.right = new BST<>("K", 0, 1);
+            assertFalse(bst.nodeNoDuplicateCheck());
+        }
+
+        @Test
+        void testWithoutDuplicates() {
+            bst = new BST<>("K", 0, 1);
+            bst.left = new BST<>("D", 0, 1);
+            bst.left.left = new BST<>("A", 0, 1);
+            bst.right = new BST<>("V", 0, 1);
+            bst.right.left = new BST<>("R", 0, 1);
+            assertTrue(bst.nodeNoDuplicateCheck());
+        }
+
+        @Test
+        void testWithoutDuplicatesOutOfOrder() {
+            bst = new BST<>("B", 0, 1);
+            bst.left = new BST<>("A", 0, 1);
+            bst.right = new BST<>("A", 0, 1);
+            assertTrue(bst.nodeNoDuplicateCheck());
         }
 
     }

@@ -343,7 +343,9 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         * < or > (the tree would fail if we used this criterion for the first test, since we originally use -- and
         * update with -- values that are in the tree */
         /* Never-mind -- I think I understand.  If we traverse the tree (inorder) and it is not in order then this test --
-        * which seems like it is best implemented by using an in-order traversal -- will fail. */
+        * which seems like it is best implemented by using an in-order traversal -- will fail.
+        * Good way to do this might be with a stack that we pass around recursively and update.  Then at each node we
+        * peak at the stack and return false if it matches the current key. */
         if (isEmpty()) return true;
         return root.nodeNoDuplicateCheck();
     }

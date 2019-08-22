@@ -1,5 +1,7 @@
 package SymbolTables;
 
+import edu.princeton.cs.algs4.Stack;
+
 public class BST<Key extends Comparable<Key>, Value> {
     protected Key key;
     protected Value value;
@@ -49,7 +51,18 @@ public class BST<Key extends Comparable<Key>, Value> {
     public boolean nodeNoDuplicateCheck() {
         // strategy: traverse the tree and put the result in an in-order queue -- then pop each item off the queue
         // and compare it with its predecessor to check that they are not equal.
-        return false;
+        return nodeNoDuplicateCheck(this, new Stack<>());
+    }
+
+    public static <Key extends Comparable<Key>, Value> boolean
+    nodeNoDuplicateCheck(BST<Key, Value> node, Stack<Key> s) {
+        if (node == null) return true;
+        if (!nodeNoDuplicateCheck(node.left, s)) return false;
+        Key last;
+        if (!s.isEmpty()) last = s.peek(); else last = null;
+        if (last != null && last.compareTo(node.key) == 0) return false;
+        s.push(node.key);
+        return nodeNoDuplicateCheck(node.right, s);
     }
 
 }
