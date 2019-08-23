@@ -8,11 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BSTTest {
 
-    private BST<String, Integer> bst;
+    BST<String, Integer> bst;
 
     @BeforeEach
     void setup() {
-        // TODO should just have overloaded method for no args?
         bst = new BST<>(null, null, 1);
     }
 

@@ -45,9 +45,9 @@ class RedBlackBST_STTest {
     }
 
     @Test
-    void testIsBST() {
+    void testIsRedBlackBST() {
         trace();
-        assertTrue(st.isBST());
+        assertTrue(st.isRedBlack());
     }
 
     void trace() {

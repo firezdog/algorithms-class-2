@@ -83,25 +83,24 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
 
     // region test utils
-    // TODO
-    public void is23() {
+    private boolean is23() {
         // Check:
         // 1. No node is connected to two red links
         // 2. There are no right-leaning red links
+        return ((RedBlackBST) root).is23();
     }
 
-    // TODO
-    public void isBalanced() {
-        // Check:
-        // All paths have same number of black links
+    private boolean isBalanced() {
+        if (isEmpty()) return true;
+        return ((RedBlackBST) root).isBalanced();
     }
 
-    // TODO
-    public void isRedBlack() {
+    boolean isRedBlack() {
         // Check:
         // 1. is BST
         // 2. is23
         // 3. isBalanced
+        return isBST() && isBalanced() && is23();
     }
     // endregion
 

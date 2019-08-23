@@ -49,8 +49,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     boolean nodeNoDuplicateCheck() {
-        // strategy: traverse the tree and put the result in an in-order queue -- then pop each item off the queue
-        // and compare it with its predecessor to check that they are not equal.
+        /* strategy: traverse the tree and put the result in a stack (whose contents happen to be in-order
+        -- or reverse-order, anyway -- then pop each item off the queue and compare it with its predecessor to
+        check that they are not equal. */
         return nodeNoDuplicateCheck(this, new Stack<>());
     }
 
