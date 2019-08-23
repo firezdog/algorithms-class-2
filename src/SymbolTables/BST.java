@@ -20,17 +20,17 @@ public class BST<Key extends Comparable<Key>, Value> {
         return node.size;
     }
 
-    public boolean nodeCountCheck() {
+    boolean nodeCountCheck() {
         return nodeCountCheck(this);
     }
 
-    public static boolean nodeCountCheck(BST node) {
+    static boolean nodeCountCheck(BST node) {
         if (node == null) return true;
         if (node.size != BST.size(node.left) + BST.size(node.right) + 1) return false;
         return nodeCountCheck(node.left) && nodeCountCheck(node.right);
     }
 
-    public boolean nodeOrderCheck() {
+    boolean nodeOrderCheck() {
         BST lo, hi;
         lo = hi = this;
         while (lo.left != null) lo = lo.left;
@@ -38,7 +38,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return nodeOrderCheck((Key) lo.key, (Key) hi.key, this);
     }
 
-    public static <Key extends Comparable<Key>, Value> boolean
+    static <Key extends Comparable<Key>, Value> boolean
     nodeOrderCheck(Key lo, Key hi, BST<Key,Value> node) {
         // to make this work without excessive checks and pointer errors, looks like unfortunately I have to pass
         // responsibility for the initial lo, hi to the caller (getting max and min for that tree)
@@ -48,13 +48,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         return false;
     }
 
-    public boolean nodeNoDuplicateCheck() {
+    boolean nodeNoDuplicateCheck() {
         // strategy: traverse the tree and put the result in an in-order queue -- then pop each item off the queue
         // and compare it with its predecessor to check that they are not equal.
         return nodeNoDuplicateCheck(this, new Stack<>());
     }
 
-    public static <Key extends Comparable<Key>, Value> boolean
+    private static <Key extends Comparable<Key>, Value> boolean
     nodeNoDuplicateCheck(BST<Key, Value> node, Stack<Key> s) {
         if (node == null) return true;
         if (!nodeNoDuplicateCheck(node.left, s)) return false;

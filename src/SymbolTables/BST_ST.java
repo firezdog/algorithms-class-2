@@ -8,7 +8,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     /* The number of key-value pairs in the symbol table. */
     protected BST<Key, Value> root;
-    protected int compares;
+    int compares;
 
     public int compares() {
         int compares = this.compares;
@@ -323,19 +323,19 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
 
     // region test utils
     // Count for node is correct
-    boolean nodeCountCheck() {
+    private boolean nodeCountCheck() {
         if (isEmpty()) return true;
         return root.nodeCountCheck();
     }
 
-    // Check that given a range, all of a node's sub-nodes (including itself) are within
-    // that range.
-    boolean nodeOrderCheck() {
+    /* Check that given a range, all of a node's sub-nodes (including itself) are within
+    * that range. */
+    private boolean nodeOrderCheck() {
         if (isEmpty()) return true;
         return root.nodeOrderCheck();
     }
 
-    boolean nodeNoDuplicateCheck() {
+    private boolean nodeNoDuplicateCheck() {
         // this test is supposed to assume that the BST being checked is ordered
         // it seems like with the way put works, we would only need to check the right for duplicates?
         /* another idea might be that the order check checks that everything in the tree is <= or >= a max and min,
@@ -350,13 +350,15 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return root.nodeNoDuplicateCheck();
     }
 
-    // TODO
-    void isBST() {
+    boolean isBST() {
         // Check:
         // 1. nodeCountCheck
-        // 2. Order for node is correct (all nodes are between
-        // a min and max, recursively?)
-        // 3. There are no duplicates
+        return nodeCountCheck() &&
+                /* 2. Order for node is correct (all nodes are between
+                * a min and max, recursively?) */
+                nodeOrderCheck() &&
+                // 3. There are no duplicates (only works if the order is correct)
+                nodeNoDuplicateCheck();
     }
     // endregion
 

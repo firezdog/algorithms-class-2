@@ -45,15 +45,9 @@ class RedBlackBST_STTest {
     }
 
     @Test
-    void testNodeCount() {
+    void testIsBST() {
         trace();
-        assertTrue(st.nodeCountCheck());
-    }
-
-    @Test
-    void testNodeOrder() {
-        trace();
-        assertTrue(st.nodeOrderCheck());
+        assertTrue(st.isBST());
     }
 
     void trace() {
