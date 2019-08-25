@@ -18,6 +18,8 @@ class RedBlackBST<Key extends Comparable<Key>, Value> extends BST<Key, Value> {
         this.color = BLACK;
     }
 
+    void redden() { this.color = RED; }
+
     /* Take the node to the right and make it a new root -- keep the new root's right, but move its left to
      * the right of the old node. */
     static RedBlackBST rotateLeft(RedBlackBST node) {

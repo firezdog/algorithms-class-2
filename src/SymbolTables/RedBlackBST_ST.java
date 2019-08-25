@@ -52,10 +52,13 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         else if (compare > 0) node.right = put(key, value, (RedBlackBST<Key, Value>) node.right);
         else node.value = value;
 
-        if (isRed((RedBlackBST<Key, Value>) node.right) && !isRed((RedBlackBST<Key, Value>) node.left)) node = rotateLeft(node);
+        if (isRed((RedBlackBST<Key, Value>) node.right) && !isRed((RedBlackBST<Key, Value>) node.left))
+            node = rotateLeft(node);
         // if the left node is red, it of course exists
-        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.left.left)) node = rotateRight(node);
-        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.right)) flipColors(node);
+        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.left.left))
+            node = rotateRight(node);
+        if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.right))
+            flipColors(node);
 
         node.size = size(node.left) + size(node.right) + 1;
         return node;
@@ -70,8 +73,9 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
 
     private RedBlackBST<Key, Value> deleteMin(RedBlackBST node) {
         // the way down
-            // 1 left is three-node (LL red) -- nothing to do
-            // 3 else right is three node (RL red)  -- borrow
+            // 1 left is 3+ (L red) -- nothing to do
+            // 2 else right is 3+ node (R red)  -- borrow
+            // 3 else both left and right are 2 (RL black) -- combine w/ parent (rotate right and flip colors?)
         // the bottom
           // 3 node or 4 node (by invariant) => 2 node or 3 node
         // the way up
@@ -79,16 +83,15 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
 
     @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
-    private Key deleteMin() {
-        // base cases
-        if (isEmpty()) return null;
-        if (this.size() == 1) { Key key = root.key; root = null; return key; }
-        if (this.size() == 2) { Key key = root.left.key; root.left = null; return key; }
-        // invariant: current node is not a 2-node
+    private void deleteMin() {
+        if (isEmpty()) return;
+        // start invariant: current node is not a 2-node (black)
         if (!isRed((RedBlackBST) root.left) && !isRed((RedBlackBST) root.right))
-            flipColors((RedBlackBST) root);
-        // after we are done with the root
-        return deleteMin((RedBlackBST) root).key;
+            ((RedBlackBST) root).redden();
+        // send prepared root for processing in deletion algo
+        root = deleteMin((RedBlackBST) root);
+        // tidy up.
+        if (!isEmpty()) ((RedBlackBST) root).blacken();
     }
 
 
