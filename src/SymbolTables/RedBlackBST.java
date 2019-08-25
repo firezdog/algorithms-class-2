@@ -56,8 +56,11 @@ class RedBlackBST<Key extends Comparable<Key>, Value> extends BST<Key, Value> {
 
     // flips colors of the children from red to black and color of parent from black to red.
     static void flipColors(RedBlackBST node) {
-        node.color = RED;
-        ((RedBlackBST) node.left).color = ((RedBlackBST) node.right).color = BLACK;
+        /*  in Python you could easily do some kind of iteration here (and this would also eliminate the cast),
+        *   but there's only three so... */
+        node.color = !node.color;
+        ((RedBlackBST) node.left).color = !((RedBlackBST) node.left).color;
+        ((RedBlackBST) node.right).color = !((RedBlackBST) node.right).color;
     }
 
     // Check all paths have same number of black links

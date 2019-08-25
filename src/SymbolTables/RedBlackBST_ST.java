@@ -62,6 +62,39 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     }
 
     // TODO
+    /*  3.3.39 Delete the minimum. Implement the deleteMin() operation for red-black
+    *   BSTs by maintaining the correspondence with the transformations given in the text for
+    *   moving down the left spine of the tree while maintaining the invariant that the current
+    *   node is not a 2-node.
+    */
+
+    private RedBlackBST<Key, Value> deleteMin(RedBlackBST node) {
+        // the way down
+            // 1 left is three-node (LL red) -- nothing to do
+            // 3 else right is three node (RL red)  -- borrow
+        // the bottom
+          // 3 node or 4 node (by invariant) => 2 node or 3 node
+        // the way up
+        return null;
+    }
+
+    @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
+    private Key deleteMin() {
+        // base cases
+        if (isEmpty()) return null;
+        if (this.size() == 1) { Key key = root.key; root = null; return key; }
+        if (this.size() == 2) { Key key = root.left.key; root.left = null; return key; }
+        // invariant: current node is not a 2-node
+        if (!isRed((RedBlackBST) root.left) && !isRed((RedBlackBST) root.right))
+            flipColors((RedBlackBST) root);
+        // after we are done with the root
+        return deleteMin((RedBlackBST) root).key;
+    }
+
+
+
+
+    // TODO
     public void delete(Key key) {
 
     }
