@@ -94,14 +94,16 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         * The head itself might be red, in which case we're already in a chain and we don't need to worry.  */
         boolean headIsNot3Plus = !isRed((RedBlackBST) head.left) && !isRed((RedBlackBST) head.left.left);
         if (headIsNot3Plus) head = borrowRight(head);
-        head.left = deleteMin(head.left);
+        head.left = deleteMin((RedBlackBST) head.left);
         return balance(head);
     }
 
     private RedBlackBST borrowRight(RedBlackBST head) {
+        return null;
     }
 
     private RedBlackBST balance(RedBlackBST head) {
+        return null;
     }
 
     // TODO
