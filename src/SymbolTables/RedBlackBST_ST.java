@@ -71,15 +71,27 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     *   node is not a 2-node.
     */
 
-    private RedBlackBST<Key, Value> deleteMin(RedBlackBST node) {
+    @SuppressWarnings("all")
+    private RedBlackBST deleteMin(RedBlackBST node) {
         // the way down
+            // first flip the colors, because we want to reinterpret this node as a 3+ node
+        flipColors(node);
             // 1 left is 3+ (L red) -- nothing to do
+        if (isRed((RedBlackBST) node.left)) ;
             // 2 else right is 3+ node (R red)  -- borrow
+        else if (isRed((RedBlackBST) node.right)) borrowRight(node);
             // 3 else both left and right are 2 (RL black) -- combine w/ parent (rotate right and flip colors?)
+        else rotateRight(node);
+        node = deleteMin((RedBlackBST) node.left);
         // the bottom
           // 3 node or 4 node (by invariant) => 2 node or 3 node
+        node.left = null;
         // the way up
-        return null;
+        flipColors(node);
+        return node;
+    }
+
+    private void borrowRight(RedBlackBST node) {
     }
 
     @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
