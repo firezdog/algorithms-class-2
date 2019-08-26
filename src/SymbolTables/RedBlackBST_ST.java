@@ -71,33 +71,10 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     *   node is not a 2-node.
     */
 
-    @SuppressWarnings("all")
-    private RedBlackBST deleteMin(RedBlackBST node) {
-        // the way down
-            // first flip the colors, because we want to reinterpret this node as a 3+ node
-        flipColors(node);
-            // 1 left is 3+ (L red) -- nothing to do
-        if (isRed((RedBlackBST) node.left)) ;
-            // 2 else right is 3+ node (R red)  -- borrow
-        else if (isRed((RedBlackBST) node.right)) borrowRight(node);
-            // 3 else both left and right are 2 (RL black) -- combine w/ parent (rotate right and flip colors?)
-        else rotateRight(node);
-        node = deleteMin((RedBlackBST) node.left);
-        // the bottom
-          // 3 node or 4 node (by invariant) => 2 node or 3 node
-        node.left = null;
-        // the way up
-        flipColors(node);
-        return node;
-    }
-
-    private void borrowRight(RedBlackBST node) {
-    }
-
     @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
     private void deleteMin() {
         if (isEmpty()) return;
-        // start invariant: current node is not a 2-node (black)
+        // start invariant: current node is not a 2-node (black) -- this prepares for processing in next step
         if (!isRed((RedBlackBST) root.left) && !isRed((RedBlackBST) root.right))
             ((RedBlackBST) root).redden();
         // send prepared root for processing in deletion algo
@@ -106,8 +83,26 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         if (!isEmpty()) ((RedBlackBST) root).blacken();
     }
 
+    @SuppressWarnings("all")
+    private RedBlackBST deleteMin(RedBlackBST head) {
+        // base case -- when you get to the end, delete
+        if (head.left == null) return null;
+        /* this should correspond to the condition that neither the successor nor its successor is a 3+ node. Why
+        * is it OK for the successor not to be a 3+ node? It seems like what is meant here is that, if neither the
+        * head nor its successor is part of a chain (a 3+) node, we need to make sure we're in a chain. I guess
+        * that it's OK for the head to be black as long as its left child is red -- because then we're in a chain.
+        * The head itself might be red, in which case we're already in a chain and we don't need to worry.  */
+        boolean headIsNot3Plus = !isRed((RedBlackBST) head.left) && !isRed((RedBlackBST) head.left.left);
+        if (headIsNot3Plus) head = borrowRight(head);
+        head.left = deleteMin(head.left);
+        return balance(head);
+    }
 
+    private RedBlackBST borrowRight(RedBlackBST head) {
+    }
 
+    private RedBlackBST balance(RedBlackBST head) {
+    }
 
     // TODO
     public void delete(Key key) {
