@@ -4,6 +4,8 @@ import edu.princeton.cs.algs4.Queue;
 
 class RedBlackBST<Key extends Comparable<Key>, Value> extends BST<Key, Value> {
 
+    /* interpretation: a node with a left red is a 3 node; a node with a left and right red is a (temporary) 4 node =>
+    a node with a left and left-left red => 3 2-nodes (color flip) */
     static final boolean RED = true;
     static final boolean BLACK = false;
 
