@@ -54,12 +54,16 @@ class RedBlackBST_STTest {
     @Test
     void testDelete() {
         trace();
-        st.delete("");
-        st.delete("");
+        assertTrue(st.contains("A"));
         st.delete("");
         assertFalse(st.contains("A"));
+        assertTrue(st.contains("C"));
+        st.delete("");
         assertFalse(st.contains("C"));
+        assertTrue(st.contains("E"));
+        st.delete("");
         assertFalse(st.contains("E"));
+        assertTrue(st.isRedBlack());
     }
 
     void trace() {
