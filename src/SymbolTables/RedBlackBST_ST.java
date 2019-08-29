@@ -88,21 +88,37 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         // base case -- when you get to the end, delete
         if (head.left == null) return null;
         /* this should correspond to the condition that neither the successor nor its successor is a 3+ node. Why
-        * is it OK for the successor not to be a 3+ node? It seems like what is meant here is that, if neither the
-        * head nor its successor is part of a chain (a 3+) node, we need to make sure we're in a chain. I guess
+        * is it OK for the successor not to be a 3+ node? -- It seems like what is meant here is that, if neither the
+        * successor nor its successor is part of a chain (a 3+) node, we need to re-establish the invariant. I guess
         * that it's OK for the head to be black as long as its left child is red -- because then we're in a chain.
         * The head itself might be red, in which case we're already in a chain and we don't need to worry.  */
-        boolean headIsNot3Plus = !isRed((RedBlackBST) head.left) && !isRed((RedBlackBST) head.left.left);
-        if (headIsNot3Plus) head = borrowRight(head);
+        boolean leftIsNot3Plus =
+                !isRed((RedBlackBST) head.left) &&
+                !isRed((RedBlackBST) head.left.left);
+        if (leftIsNot3Plus) head = borrowRight(head);
         head.left = deleteMin((RedBlackBST) head.left);
         return balance(head);
     }
 
+    @SuppressWarnings("all")
     private RedBlackBST borrowRight(RedBlackBST head) {
-        return null;
+        /* since left is black (assumption from call), left will become part of chain.  Then in terms of our rep.,
+        * we need to fix the invariant that red links are not allowed. */
+        flipColors(head);
+        boolean ThreePlusRight = isRed((RedBlackBST) head.right.left);
+        // case 1: the immediate sibling is a 3+ node: move key from sibling to left
+        if (ThreePlusRight) {
+            // head.right -- -1 left node + 1 right node
+            head.right = rotateRight((RedBlackBST) head.right);
+            // head -- -1 right node + 1 left node
+            head = rotateLeft(head);
+        }
+        /* case 2: the immediate sibling is a 2 node: move key from parent and reduce -- default for flip. */
+        return head;
     }
 
     private RedBlackBST balance(RedBlackBST head) {
+        // "Then, on the way up the tree, we split any unused temporary 4-nodes."
         return null;
     }
 
