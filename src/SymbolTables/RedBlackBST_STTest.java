@@ -50,6 +50,18 @@ class RedBlackBST_STTest {
         assertTrue(st.isRedBlack());
     }
 
+    // test deleteMin for now.
+    @Test
+    void testDelete() {
+        trace();
+        st.delete("");
+        st.delete("");
+        st.delete("");
+        assertFalse(st.contains("A"));
+        assertFalse(st.contains("C"));
+        assertFalse(st.contains("E"));
+    }
+
     void trace() {
         int i = 0;
         StdIn.fromFile("data/trace.txt");

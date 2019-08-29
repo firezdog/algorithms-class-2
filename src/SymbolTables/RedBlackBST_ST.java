@@ -54,9 +54,17 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
 
         if (isRed((RedBlackBST<Key, Value>) node.right) && !isRed((RedBlackBST<Key, Value>) node.left))
             node = rotateLeft(node);
-        // if the left node is red, it of course exists
+        /* Below: if the left node is red, it of course exists.  Can this get hit if the first does?  In that case we
+        * have left black, right red.  Next red becomes head, head becomes left (?).  Then we have a red head with a red
+        * left, but that red left has a black left.  So seems like the second statement will never be hit if first
+        * is, and this could possibly be an else?  -- On the other hand, it will be hit one call up the recursive
+        * chain. When the first is hit one call below!  */
         if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.left.left))
             node = rotateRight(node);
+        /* This should always get called if the above gets called, so the question is whether it ever gets
+        * called if the first gets called?  I don't see how, because after the first we pull the red
+        * node left (to the head) and get a head with a black left -- and in addition, I don't see how the
+        * new head could have a red right, given that insertion has been correctly performed thus far. */
         if (isRed((RedBlackBST<Key, Value>) node.left) && isRed((RedBlackBST<Key, Value>) node.right))
             flipColors(node);
 
@@ -117,14 +125,24 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         return head;
     }
 
+    @SuppressWarnings("all")
     private RedBlackBST balance(RedBlackBST head) {
-        // "Then, on the way up the tree, we split any unused temporary 4-nodes."
-        return null;
+        /* "Then, on the way up the tree, we split any unused temporary 4-nodes." In the method as given,
+        * we start by checking for red rights -- left over from the initial color flip, I assume. */
+        if (isRed((RedBlackBST) head.right)) head = rotateLeft(head);
+        // now we need to repair the damage, as in put.
+        if (!isRed((RedBlackBST) head.left) && isRed((RedBlackBST) head.right)) head = rotateLeft(head);
+        if (isRed((RedBlackBST) head.left) && isRed((RedBlackBST) head.left.left)) head = rotateRight(head);
+        if (isRed((RedBlackBST) head.left) && isRed((RedBlackBST) head.right)) flipColors(head);
+        // calculate size and return, as in put (1 was deleted).
+        head.size = size(head.left) + size(head.right) + 1;
+        return head;
     }
 
     // TODO
+    @SuppressWarnings("all")
     public void delete(Key key) {
-
+        root = deleteMin((RedBlackBST) root);
     }
     // endregion
 
