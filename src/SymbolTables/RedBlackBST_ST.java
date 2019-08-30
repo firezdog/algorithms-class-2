@@ -79,6 +79,7 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     *   node is not a 2-node.
     */
 
+    // region delete
     @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
     private void deleteMin() {
         if (isEmpty()) return;
@@ -144,7 +145,9 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
     public void delete(Key key) {
         root = deleteMin((RedBlackBST) root);
     }
-    // endregion
+    // endregion delete
+
+    // endregion basic functionality
 
     protected void show(BST node, double x, double y, double xOffset, double yOffset) {
         if (node == null) return;
@@ -181,6 +184,6 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         // 3. isBalanced
         return isBST() && isBalanced() && is23();
     }
-    // endregion
+    // endregion test utils
 
 }
