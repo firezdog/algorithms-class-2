@@ -72,24 +72,25 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         return node;
     }
 
-    // TODO
-    /*  3.3.39 Delete the minimum. Implement the deleteMin() operation for red-black
-    *   BSTs by maintaining the correspondence with the transformations given in the text for
-    *   moving down the left spine of the tree while maintaining the invariant that the current
-    *   node is not a 2-node.
-    */
-
     // region delete
-    @SuppressWarnings("all") // I have to use casts because of my poor life decisions :(
-    private void deleteMin() {
+    // TODO
+    @SuppressWarnings("all")
+    public void delete(Key key) {
         if (isEmpty()) return;
-        // start invariant: current node is not a 2-node (black) -- this prepares for processing in next step
         if (!isRed((RedBlackBST) root.left) && !isRed((RedBlackBST) root.right))
             ((RedBlackBST) root).redden();
-        // send prepared root for processing in deletion algo
-        root = deleteMin((RedBlackBST) root);
-        // tidy up.
-        if (!isEmpty()) ((RedBlackBST) root).blacken();
+        root = delete((RedBlackBST) root);
+    }
+
+    @SuppressWarnings("all")
+    private BST<Key,Value> delete(RedBlackBST root) {
+        // check for equality
+            // if equal, save min in right sub-tree, delete min in right sub-tree, replace head with min
+            // is this handled like an insertion?
+            // balance
+        // decide whether we have to go left or right (successor)
+            // prep the successor (make sure it will be 3+) and go to successor
+        return null;
     }
 
     @SuppressWarnings("all")
@@ -101,12 +102,16 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         * successor nor its successor is part of a chain (a 3+) node, we need to re-establish the invariant. I guess
         * that it's OK for the head to be black as long as its left child is red -- because then we're in a chain.
         * The head itself might be red, in which case we're already in a chain and we don't need to worry.  */
-        boolean leftIsNot3Plus =
-                !isRed((RedBlackBST) head.left) &&
-                !isRed((RedBlackBST) head.left.left);
-        if (leftIsNot3Plus) head = borrowRight(head);
+        if (isNot3Plus(head)) head = borrowRight(head);
         head.left = deleteMin((RedBlackBST) head.left);
         return balance(head);
+    }
+
+    @SuppressWarnings("all")
+    private boolean isNot3Plus(RedBlackBST head) {
+        return
+            !isRed((RedBlackBST) head.left) &&
+            !isRed((RedBlackBST) head.left.left);
     }
 
     @SuppressWarnings("all")
@@ -138,12 +143,6 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         // calculate size and return, as in put (1 was deleted).
         head.size = size(head.left) + size(head.right) + 1;
         return head;
-    }
-
-    // TODO
-    @SuppressWarnings("all")
-    public void delete(Key key) {
-        root = deleteMin((RedBlackBST) root);
     }
     // endregion delete
 
