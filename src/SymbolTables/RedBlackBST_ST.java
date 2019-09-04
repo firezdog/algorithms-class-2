@@ -79,18 +79,58 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         if (isEmpty()) return;
         if (!isRed((RedBlackBST) root.left) && !isRed((RedBlackBST) root.right))
             ((RedBlackBST) root).redden();
-        root = delete((RedBlackBST) root);
+        root = delete(key, (RedBlackBST) root);
+        if (!isEmpty()) ((RedBlackBST) root).blacken();
     }
 
     @SuppressWarnings("all")
-    private BST<Key,Value> delete(RedBlackBST root) {
-        // check for equality
-            // if equal, save min in right sub-tree, delete min in right sub-tree, replace head with min
-            // is this handled like an insertion?
-            // balance
-        // decide whether we have to go left or right (successor)
-            // prep the successor (make sure it will be 3+) and go to successor
+    private BST<Key,Value> delete(Key key, RedBlackBST<Key, Value> head) {
+        /* "The same transformations along the search path just described for deleting the
+        minimum are effective to ensure that the current node is not a 2-node during a search
+        for any key. If the search key is at the bottom, we can just remove it. If the key is not
+        at the bottom, then we have to exchange it with its successor as in regular BSTs. Then,
+        since the current node is not a 2-node, we have reduced the problem to deleting the
+        minimum in a subtree whose root is not a 2-node, and we can use the procedure just
+        described for that subtree. After the deletion, as usual, we split any remaining 4-nodes
+        on the search path on the way up the tree." */
+        // case where we've moved out of the tree
+        if (head == null) return null;
+        if (keyLess(key, node)) {
+            if (!is3Plus(head)) head = borrowRight(head);
+            head.left = delete(key, (RedBlackBST) head.left);
+        // either we're going right or we've arrived.
+        } else {
+            /* first book says move a red left right: if the left is not red, then current node is red, I think --
+            * because if current is black and left is black, the nodes we move to will not have a 3+ parent and the
+            * invariant will be violated.  In any event, we want the current node to be red before the next step --
+            * why? because then the current node is guaranteed to be part of a 3+ node and we can delete it without
+            * consequence. Now -- oving right changes the current key we're comparing with to the left of
+            * the current node?  But that shouldn't matter in some sense, because if the key is greater than
+            * current node, it will also be greater than current node's left.  Eventually we will reach a key whose
+            * left is not red and the algo will proceed. */
+            if (isRed((RedBlackBST) head.left)) head = rotateRight(head);
+            /* case where we've found our node and it has no right -- we can just delete it.  What about the left? I
+            * don't know, but I would guess we've reached a terminal right (a greatest right for that branch --
+            * which makes sense, since this is supposed to be the case where we got to the bottom of the tree,
+            * and the tree (notwithstanding red-black != bst) is balanced.  In that case, left is automatically null. */
+            if (keyEqual(key, head) && head.right == null) return null;
+            /* now prepare for the case where the key is equal but it has a right. we will apply deleteMin, so we need
+            * to prepare the invariant by making sure the current node is red. */
+            //TODO
+        }
         return null;
+    }
+
+    private boolean keyLess(Key key, BST<Key, Value> node) {
+        return key.compareTo(node.key) < 0;
+    }
+
+    private boolean keyEqual(Key key, BST<Key, Value> node) {
+        return key.compareTo(node.key) == 0;
+    }
+
+    private boolean keyGreater(Key key, BST<Key, Value> node) {
+        return key.compareTo(node.key) > 0;
     }
 
     @SuppressWarnings("all")
@@ -102,16 +142,22 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         * successor nor its successor is part of a chain (a 3+) node, we need to re-establish the invariant. I guess
         * that it's OK for the head to be black as long as its left child is red -- because then we're in a chain.
         * The head itself might be red, in which case we're already in a chain and we don't need to worry.  */
-        if (isNot3Plus(head)) head = borrowRight(head);
+        if (!is3Plus(head)) head = borrowRight(head);
         head.left = deleteMin((RedBlackBST) head.left);
         return balance(head);
     }
 
     @SuppressWarnings("all")
-    private boolean isNot3Plus(RedBlackBST head) {
+    private boolean is3Plus(RedBlackBST head) {
         return
-            !isRed((RedBlackBST) head.left) &&
-            !isRed((RedBlackBST) head.left.left);
+            isRed((RedBlackBST) head.left) ||
+            isRed((RedBlackBST) head.left.left);
+    }
+
+    @SuppressWarnings("all")
+    private boolean has3PlusRight(RedBlackBST head) {
+        if (head.right == null) return false; // null links are black
+        return isRed((RedBlackBST) head.right.left);
     }
 
     @SuppressWarnings("all")
@@ -119,9 +165,8 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         /* since left is black (assumption from call), left will become part of chain.  Then in terms of our rep.,
         * we need to fix the invariant that red links are not allowed. */
         flipColors(head);
-        boolean ThreePlusRight = isRed((RedBlackBST) head.right.left);
         // case 1: the immediate sibling is a 3+ node: move key from sibling to left
-        if (ThreePlusRight) {
+        if (has3PlusRight(head)) {
             // head.right -- -1 left node + 1 right node
             head.right = rotateRight((RedBlackBST) head.right);
             // head -- -1 right node + 1 left node
