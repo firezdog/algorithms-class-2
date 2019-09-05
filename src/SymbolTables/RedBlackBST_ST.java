@@ -95,7 +95,7 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
         on the search path on the way up the tree." */
         // case where we've moved out of the tree
         if (head == null) return null;
-        if (keyLess(key, node)) {
+        if (keyLess(key, head)) {
             if (!is3Plus(head)) head = borrowRight(head);
             head.left = delete(key, (RedBlackBST) head.left);
         // either we're going right or we've arrived.
@@ -114,11 +114,25 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
             * which makes sense, since this is supposed to be the case where we got to the bottom of the tree,
             * and the tree (notwithstanding red-black != bst) is balanced.  In that case, left is automatically null. */
             if (keyEqual(key, head) && head.right == null) return null;
-            /* now prepare for the case where the key is equal but it has a right. we will apply deleteMin, so we need
-            * to prepare the invariant by making sure the current node is red. */
-            //TODO
+            /* now prepare for the case where the key is equal but it has a right.  If we're going to go right, we
+            * should make sure that our next node is also 3+ -- not sure why this is done before the actual deletion
+            * -- is it to prepare for delete min in some way?  Didn't we already make sure the current node is 3+
+            * above? */
+            if (!isRed((RedBlackBST) head.right) && !is3Plus((RedBlackBST) head.right))
+                head = borrowRight(head);
+            /* now the case where we've found our key -- we're going to swap it with the min from the right, thus
+            * preserving the BST ordering (because everything on the right will be > right's min) and then delete
+            * that min. */
+            if (keyEqual(key, head)) {
+                // we only need the min as instance of a BST here, because we don't access color
+                BST min = min(head.right);
+                head.key = (Key) min.key;
+                head.value = (Value) min.value;
+                head.right = deleteMin((RedBlackBST) head.right);
+            } else head.right = delete(key, (RedBlackBST) head.right);
         }
-        return null;
+        // finally balance everything out.
+        return balance(head);
     }
 
     private boolean keyLess(Key key, BST<Key, Value> node) {
@@ -149,6 +163,7 @@ public class RedBlackBST_ST<Key extends Comparable<Key>, Value> extends BST_ST<K
 
     @SuppressWarnings("all")
     private boolean is3Plus(RedBlackBST head) {
+        if (head == null || head.left == null) return false;
         return
             isRed((RedBlackBST) head.left) ||
             isRed((RedBlackBST) head.left.left);

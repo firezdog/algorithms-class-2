@@ -161,7 +161,7 @@ public class BST_ST<Key extends Comparable<Key>, Value> implements ComparableST<
         return min(root).key;
     }
 
-    private BST<Key, Value> min(BST<Key, Value> node) {
+    protected BST<Key, Value> min(BST<Key, Value> node) {
         if (node == null) return null;
         if (node.left == null) return node;
         return min(node.left);

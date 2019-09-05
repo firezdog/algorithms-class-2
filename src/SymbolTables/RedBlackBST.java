@@ -62,6 +62,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> extends BST<Key, Value> {
     static void flipColors(RedBlackBST node) {
         /*  in Python you could easily do some kind of iteration here (and this would also eliminate the cast),
         *   but there's only three so... */
+        if (node.left == null || node.right == null) return;
         node.color = !node.color;
         ((RedBlackBST) node.left).color = !((RedBlackBST) node.left).color;
         ((RedBlackBST) node.right).color = !((RedBlackBST) node.right).color;
