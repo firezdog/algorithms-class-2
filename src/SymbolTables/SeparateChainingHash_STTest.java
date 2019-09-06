@@ -25,8 +25,9 @@ class SeparateChainingHash_STTest {
 
     @Test
     // I don't think there's any way to test these independently.
-    void testContainsAndPut() {
+    void testContainsSizeAndPut() {
         trace();
+        assertEquals(10, st.size());
         assertTrue(st.contains("S"));
         assertTrue(st.contains("X"));
         assertFalse(st.contains("Y"));

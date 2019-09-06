@@ -39,7 +39,10 @@ public class SeparateChainingHash_ST<Key extends Comparable<Key>, Value> impleme
     /* Get the index corresponding to the key using the hash function, then put an entry into the symbol table at
     * that index (using sequential search to avoid collisions). */
     public void put(Key key, Value value) {
+        int index = index(key);
+        boolean alreadyThere = st[index].get(key) != null;
         st[index(key)].put(key, value);
+        if (!alreadyThere) numEntries++;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class SeparateChainingHash_ST<Key extends Comparable<Key>, Value> impleme
 
     @Override
     public int size() {
-        return 0;
+        return numEntries;
     }
 
     @Override
