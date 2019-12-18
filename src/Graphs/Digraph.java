@@ -8,7 +8,7 @@ public class Digraph {
     Bag<Integer>[] adjacencies;
 
     public Digraph(int v) {
-        adjacencies = new Bag<Integer>[v];
+        adjacencies = (Bag<Integer>[]) new Bag[v];
     }
 
     public Digraph(In in) {
@@ -34,8 +34,8 @@ public class Digraph {
 
     public Digraph reverse() {
         int totalVertices = V();
-        Digraph reverse = new Digraph(v);
-        for (int vertex = 0; i < totalVertices; i ++) {
+        Digraph reverse = new Digraph(totalVertices);
+        for (int vertex = 0; vertex < totalVertices; vertex++) {
             for (int adjacency : adjacencies[vertex]) {
                 reverse.addEdge(adjacency, vertex);
             }
