@@ -8,7 +8,11 @@ public class Digraph {
     Bag<Integer>[] adjacencies;
 
     public Digraph(int v) {
-        adjacencies = new Bag<Integer>[v];
+        adjacencies = (Bag<Integer>[]) new Bag[v];
+        for (int i = 0; i < v; i++)
+        {
+            adjacencies[i] = new Bag<Integer>();
+        }
     }
 
     public Digraph(In in) {
@@ -27,15 +31,28 @@ public class Digraph {
         return sum;
     }
 
+    private void checkBounds(int v) {
+        if (0 <= v && v < V()) return;
+        throw new IndexOutOfBoundsException();
+    }
+
     public void addEdge(int v, int w) {
-        if (0 <= v && v < V()) adjacencies[v].add(w);
-        else throw new IndexOutOfBoundsException();
+        checkBounds(v); checkBounds(w);
+        adjacencies[v].add(w);
+    }
+
+    public boolean isAdjacent(int v, int w) {
+        checkBounds(v); checkBounds(w);
+        for (int node: adjacencies[v]) {
+            if (node == w) return true;
+        }
+        return false;
     }
 
     public Digraph reverse() {
         int totalVertices = V();
-        Digraph reverse = new Digraph(v);
-        for (int vertex = 0; i < totalVertices; i ++) {
+        Digraph reverse = new Digraph(totalVertices);
+        for (int vertex = 0; vertex < totalVertices; vertex++) {
             for (int adjacency : adjacencies[vertex]) {
                 reverse.addEdge(adjacency, vertex);
             }
