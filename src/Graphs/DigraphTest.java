@@ -2,9 +2,9 @@ package Graphs;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,17 +81,16 @@ class DigraphTest {
     @Test
     void testGetAdjacencies()
     {
-        HashMap<Integer, Boolean> expected = new HashMap<>();
-        expected.put(1, true);
-        expected.put(3, true);
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(1); expected.add(3);
 
         d = new Digraph(4);
-        d.addEdge(0, 1);
-        d.addEdge(0, 3);
+        d.addEdge(0, 1); d.addEdge(0, 3);
 
-        HashMap<Integer, Boolean> actual = new HashMap<>();
+        ArrayList<Integer> actual = new ArrayList<>();
         Iterable<Integer> adj = d.adjacent(0);
-        for (int i: adj) actual.put(i, true);
+        for (int i: adj) actual.add(i);
+        Collections.sort(expected); Collections.sort(actual);
 
         assertEquals(expected, actual);
     }
