@@ -2,6 +2,7 @@
 *.iml
 *.jar
 out/
+production/
 .vscode/
 .DS_Store
 data/

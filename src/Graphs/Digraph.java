@@ -3,8 +3,6 @@ package Graphs;
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 
-import java.io.File;
-
 public class Digraph {
 
     private final Bag<Integer>[] adjacencies;
@@ -88,12 +86,11 @@ public class Digraph {
         {
             s.append("[");
             s.append(i);
-            s.append("]: ");
+            s.append("]:");
             for (int j: adjacent(i))
             {
                 s.append(" ");
                 s.append(j);
-                s.append(" ");
             }
             s.append("\n");
         }
