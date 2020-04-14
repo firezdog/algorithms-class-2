@@ -17,7 +17,7 @@ class SeparateChainingHash_STTest {
 
     void trace() {
         int i = 0;
-        stdlib.StdIn.fromFile("data/trace.txt");
+        stdlib.StdIn.fromFile("data/symbol_tables/trace.txt");
         while (!stdlib.StdIn.isEmpty()) {
             st.put(stdlib.StdIn.readString(), i++);
         }

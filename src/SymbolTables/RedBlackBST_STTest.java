@@ -69,14 +69,14 @@ class RedBlackBST_STTest {
 
     void trace() {
         int i = 0;
-        StdIn.fromFile("data/trace.txt");
+        StdIn.fromFile("data/symbol_tables/trace.txt");
         while (!StdIn.isEmpty()) {
             st.put(StdIn.readString(), i++);
         }
     }
 
     void count() {
-        StdIn.fromFile("data/trace.txt");
+        StdIn.fromFile("data/symbol_tables/trace.txt");
         while (!StdIn.isEmpty()) {
             String key = StdIn.readString();
             Integer count = st.get(key);
