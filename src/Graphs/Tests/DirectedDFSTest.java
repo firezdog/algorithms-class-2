@@ -5,10 +5,11 @@ import Graphs.DirectedDFS;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class DirectedDFSTest
-{
+class DirectedDFSTest {
     private static Digraph g;
     DirectedDFS search;
 
@@ -21,8 +22,19 @@ class DirectedDFSTest
         g.addEdge(2, 1);
     }
 
+    static void setupMultiSource()
+    {
+        g = new Digraph(8);
+        g.addEdge(0, 1);
+        g.addEdge(0, 2);
+        g.addEdge(0, 3);
+        g.addEdge(5, 6);
+        g.addEdge(5, 7);
+    }
+
     @Test
-    void testSearch() throws Exception {
+    void testSearchSource() throws Exception
+    {
         search = new DirectedDFS(g, 0);
         assertTrue(search.reachable(0));
         assertTrue(search.reachable(1));
@@ -43,13 +55,37 @@ class DirectedDFSTest
     }
 
     @Test
-    void testSearchForUnboundSource() {
-        try
-        {
+    void testSearchForUnboundSource()
+    {
+        try {
             search = new DirectedDFS(g, 10);
             fail();
-        } catch(Exception e)
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    void testSearchForSources() throws Exception
+    {
+        setupMultiSource();
+        search = new DirectedDFS(g, Arrays.asList(0, 5));
+
+        for (int i = 0; i < g.V(); i++)
         {
+            if (i == 4) assertFalse(search.reachable(i));
+            else assertTrue(search.reachable(i));
+        }
+    }
+
+    @Test
+    void testSearchForUnboundSources() throws Exception
+    {
+        try
+        {
+            search = new DirectedDFS(g, Arrays.asList(0, 100));
+            fail();
+        } catch (Exception e) {
             assertTrue(true);
         }
     }
