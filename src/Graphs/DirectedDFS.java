@@ -22,12 +22,11 @@ public class DirectedDFS
 
     void mark(int s) throws Exception
     {
-        Vertex source = new Vertex(G, s);   // throws exception if s is out of bounds.
-        marked[s] = true;
-        Iterable<Integer> adjacencies =  G.adjacent(s);
-        for (int vertex: adjacencies)
+        marked[new Vertex(G, s).Value()] = true;
+        Iterable<Integer> adj =  G.adjacent(s);
+        for (int next : adj)
         {
-            if (!marked[vertex]) mark(vertex);
+            if (!marked[next]) mark(next);
         }
     }
 
