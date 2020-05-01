@@ -23,8 +23,7 @@ public class DirectedDFS
     void mark(int s) throws Exception
     {
         marked[new Vertex(G, s).Value()] = true;
-        Iterable<Integer> adj =  G.adjacent(s);
-        for (int next : adj)
+        for (int next : G.adjacent(s))
         {
             if (!marked[next]) mark(next);
         }
