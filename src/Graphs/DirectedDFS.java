@@ -7,10 +7,11 @@ public class DirectedDFS
     Digraph G;
     boolean[] marked;
 
-    DirectedDFS(Digraph G, int s)
-    {
+    public DirectedDFS(Digraph G, int s) throws Exception {
         // find vertices in G that are reachable from s
+        this.G = G;
         marked = new boolean[G.V()];
+        mark(s);
     }
 
     DirectedDFS(Digraph G, Iterable<Integer> sources)
@@ -21,18 +22,19 @@ public class DirectedDFS
 
     void mark(int s) throws Exception
     {
-        Vertex v = new Vertex(G, s);
+        Vertex source = new Vertex(G, s);   // throws exception if s is out of bounds.
+        marked[s] = true;
         Iterable<Integer> adjacencies =  G.adjacent(s);
         for (int vertex: adjacencies)
         {
-            mark(vertex);
+            if (!marked[vertex]) mark(vertex);
         }
-        marked[v.Value()] = true;
     }
 
-    boolean marked(int v) throws Exception
+    public boolean reachable(int v) throws Exception
     {
-        Vertex vert = new Vertex(G, v);
-        return marked[vert.Value()];
+        // is v reachable from s / s[]?
+        return marked[new Vertex(G, v).Value()];
     }
+
 }

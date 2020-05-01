@@ -1,5 +1,6 @@
-package Graphs;
+package Graphs.Tests;
 
+import Graphs.Digraph;
 import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
