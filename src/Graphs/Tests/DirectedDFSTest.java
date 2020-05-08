@@ -79,13 +79,40 @@ class DirectedDFSTest {
     }
 
     @Test
-    void testSearchForUnboundSources() throws Exception
+    void testSearchForUnboundSources()
     {
         try
         {
             search = new DirectedDFS(g, Arrays.asList(0, 100));
             fail();
         } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    void testPathTo() throws Exception
+    {
+        search = new DirectedDFS(g, 0);
+        Iterable<Integer> path = search.pathTo(2);
+        assertEquals(path.toString(), "0 1 2 ");
+    }
+
+    @Test
+    void testNoPathTo() throws Exception
+    {
+        search = new DirectedDFS(g, 0);
+        Iterable<Integer> path = search.pathTo(3);
+        assertNull(path);
+    }
+
+    @Test
+    void testUnboundedPathTo() throws Exception {
+        search = new DirectedDFS(g, 0);
+        try {
+            Iterable<Integer> path = search.pathTo(-1);
+            fail();
+        }  catch(Exception e) {
             assertTrue(true);
         }
     }
