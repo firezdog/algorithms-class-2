@@ -3,6 +3,7 @@ package Graphs.Tests;
 import Graphs.Digraph;
 import Graphs.DirectedDFS;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -13,8 +14,8 @@ class DirectedDFSTest {
     private static Digraph g;
     DirectedDFS search;
 
-    @BeforeAll
-    static void setup()
+    @BeforeEach
+    void setup()
     {
         g = new Digraph(4);
         g.addEdge(0, 1);

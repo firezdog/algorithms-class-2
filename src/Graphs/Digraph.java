@@ -97,12 +97,4 @@ public class Digraph {
         return s.toString();
     }
 
-    public static void main(String[] args)
-    {
-        In file_input = new In(args[0]);
-        Digraph d = new Digraph(file_input);
-        System.out.println(d);
-        System.out.println(d.reverse());
-    }
-
 }

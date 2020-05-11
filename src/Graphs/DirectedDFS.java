@@ -22,6 +22,7 @@ public class DirectedDFS
         // find vertices in G that are reachable from sources
         this.G = G;
         marked = new boolean[G.V()];
+        edgeTo = new int[G.V()];
         for (int s: sources)
         {
             mark(new Vertex(G, s).Value());
